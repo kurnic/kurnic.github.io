@@ -26,17 +26,27 @@ function preload() {
     game.load.spritesheet('zombie1', 'assets/zombie1.png', 29, 47);
     game.load.spritesheet('cat', 'assets/cat.png', 64, 64);
     game.load.spritesheet('toasts', 'assets/toasts.png', 21, 21);
+    game.load.spritesheet('butter', 'assets/toasts_butter.png', 21, 21);
+    game.load.spritesheet('mermelade', 'assets/toasts_mermelade.png', 21, 21);
+    game.load.spritesheet('nutella', 'assets/toasts_nutella.png', 21, 21);
+    game.load.spritesheet('powerups', 'assets/powerups.png', 21, 21);
+    game.load.spritesheet('explosion', 'assets/explosion.png', 50, 50);
 
     //Audio
     game.load.audio('preshoot', 'assets/toaster_push_down.mp3');
     game.load.audio('shoot', 'assets/toaster_pop_up.mp3');
+    game.load.audio('explosion', 'assets/explosion.ogg');
+    game.load.audio('hurt', 'assets/hurt.ogg');
 }
 
-var shakeWorld = 0;
+var shakeTimeBase = 6;
+var shakeTime = 0;
 var shakeForceBase = SCREEN_WIDTH/100;
 var shakeForce = shakeForceBase;
 
 var buildings;
+
+var powerups;
 
 var player;
 var player_speed = 100 * (SCREEN_WIDTH / 640);
@@ -46,6 +56,7 @@ var player_hurt = 0;
 var player_direction = 8;
 var player_shooting_time = 20;
 var player_shooting_cadence = 200;
+var player_powerup = 0;
 
 var toasts;
 var last_toast = 0;
@@ -66,6 +77,8 @@ var cat_speed = 2 / 640 * SCREEN_WIDTH;
 var cat_limit_left = 460 / 640 * SCREEN_WIDTH;
 var cat_limit_right = 1500 / 640 * SCREEN_WIDTH;
 
+var explosion;
+
 var cursors;
 
 var score = 0;
@@ -73,6 +86,8 @@ var scoreText;
 
 var audio_preshoot;
 var audio_shoot;
+var audio_explosion;
+var audio_hurt;
 
 function create() {
 
@@ -87,12 +102,12 @@ function create() {
     
     buildings.enableBody = true;
     
-    var building = buildings.create(0, 0, 'pixel');
-    building.scale.setTo(230 / 640 * SCREEN_WIDTH, 42 / 360 * SCREEN_HEIGHT);
+    var building = buildings.create(0, -5, 'pixel');
+    building.scale.setTo(230 / 640 * SCREEN_WIDTH, 47 / 360 * SCREEN_HEIGHT);
     building.body.immovable = true;
     
-    building = buildings.create(412 / 640 * SCREEN_WIDTH, 0, 'pixel');
-    building.scale.setTo(230 / 640 * SCREEN_WIDTH, 42 / 360 * SCREEN_HEIGHT);
+    building = buildings.create(412 / 640 * SCREEN_WIDTH, -5, 'pixel');
+    building.scale.setTo(300 / 640 * SCREEN_WIDTH, 47 / 360 * SCREEN_HEIGHT);
     building.body.immovable = true;
     
     building = buildings.create(0, 236 / 360 * SCREEN_HEIGHT, 'pixel');
@@ -100,10 +115,16 @@ function create() {
     building.body.immovable = true;
     
     building = buildings.create(412 / 640 * SCREEN_WIDTH, 236 / 360 * SCREEN_HEIGHT, 'pixel');
-    building.scale.setTo(230 / 640 * SCREEN_WIDTH, SCREEN_HEIGHT/2.77);
+    building.scale.setTo(300 / 640 * SCREEN_WIDTH, SCREEN_HEIGHT/2.77);
     building.body.immovable = true;
     
     // The power-ups TODO
+    powerups = game.add.sprite(-10000, -10000, 'powerups');
+    powerups.anchor.setTo(0.5, 0.5);
+    powerups.scale.setTo(SCREEN_WIDTH/640, SCREEN_HEIGHT/360);
+    
+    game.physics.arcade.enable(powerups);
+    powerups.body.moves = false;
 
     // The player and its settings
     player = game.add.sprite(game.world.width/2, game.world.height/2, 'toaster');
@@ -125,18 +146,16 @@ function create() {
     
     player.animations.play('idle');
     
-    // The enemies TODO
+    // The enemies
     enemies  = game.add.group();
     enemies.enableBody = true;
     
     //  Here we'll create 5 of them
     enemies.create(700 / 640 * SCREEN_WIDTH, 170 / 360 * SCREEN_HEIGHT, 'zombie1');
-    enemies.create(1500 / 640 * SCREEN_WIDTH, 190 / 360 * SCREEN_HEIGHT, 'zombie1');
-    enemies.create(2200 / 640 * SCREEN_WIDTH, 250 / 360 * SCREEN_HEIGHT, 'zombie1');
-    enemies.create(2700 / 640 * SCREEN_WIDTH, 50 / 360 * SCREEN_HEIGHT, 'zombie1');
-    enemies.create(3000 / 640 * SCREEN_WIDTH, 300 / 360 * SCREEN_HEIGHT, 'zombie1');
-    enemies.create(4000 / 640 * SCREEN_WIDTH, 180 / 360 * SCREEN_HEIGHT, 'zombie1');
-    enemies.create(-4000 / 640 * SCREEN_WIDTH, 180 / 360 * SCREEN_HEIGHT, 'zombie1');
+    enemies.create(900 / 640 * SCREEN_WIDTH, 190 / 360 * SCREEN_HEIGHT, 'zombie1');
+    enemies.create(-400 / 640 * SCREEN_WIDTH, 180 / 360 * SCREEN_HEIGHT, 'zombie1');
+    enemies.create(320 / 640 * SCREEN_WIDTH, -600 / 360 * SCREEN_HEIGHT, 'zombie1');
+    enemies.create(320 / 640 * SCREEN_WIDTH, 5000 / 360 * SCREEN_HEIGHT, 'zombie1');
     
     //We add the properties to the enemies
     for (var i = 0; i < enemies.children.length; i++)
@@ -171,6 +190,11 @@ function create() {
     cat.animations.add('walk', [0, 1, 2, 3], 10, true);
     cat.animations.play('walk');
 
+    // The explosion effect
+    explosion = game.add.sprite(-10000, -10000, 'explosion');
+    explosion.scale.setTo(SCREEN_WIDTH/640, SCREEN_HEIGHT/360);
+    explosion.animations.add('explode', [0, 1, 2, 3, 5, 6, 7, 8, 9], 20, false);
+    
     //  The score
     scoreText = game.add.text(10, 10, 'Score: 0');
     scoreText.fontSize = '32px';
@@ -183,18 +207,20 @@ function create() {
     cursors = game.input.keyboard.createCursorKeys();
     
     //Audio
-    audio_preshoot = game.add.audio('preshoot');
-    audio_shoot = game.add.audio('shoot');
+    audio_preshoot = game.add.audio('preshoot', 0.8);
+    audio_shoot = game.add.audio('shoot', 0.8);
+    audio_explosion = game.add.audio('explosion', 0.8);
+    audio_hurt = game.add.audio('hurt', 0.8);
 }
 
 function update() {
-    if (shakeWorld > 0) {
+    if (shakeTime > 0) {
         var rand1 = game.rnd.integerInRange(-shakeForce,shakeForce);
         var rand2 = game.rnd.integerInRange(-shakeForce,shakeForce);
         game.world.setBounds(rand1, rand2, game.width + rand1, game.height + rand2);
-        shakeWorld--;
-        if (shakeWorld == 0) {
-            game.world.setBounds(0, 0, game.width,game.height); // normalize after shake?
+        shakeTime--;
+        if (shakeTime <= 0) {
+            game.world.setBounds(0, 0, game.width,game.height); // normalize after shake
         }
     }
     
@@ -203,6 +229,7 @@ function update() {
     game.physics.arcade.collide(buildings, toasts, collisionBuildingToast, null, this);
     game.physics.arcade.collide(enemies, toasts, collisionEnemyToast, null, this);
     game.physics.arcade.collide(player, enemies, collisionEnemyPlayer, null, this);
+    game.physics.arcade.collide(player, powerups, collisionPlayerPowerup, null, this);
     
     //Cat behavior
     if(cat_direction) {
@@ -319,6 +346,44 @@ function update() {
             
             last_toast = (last_toast+1)%MAX_TOASTS;
         }
+        else if(player_powerup == 1) {
+            //Moving while shooting because of the butter
+            if (((cursors.up.isDown||cursors.down.isDown) && (cursors.left.isDown||cursors.right.isDown)) || 
+            (game.input.activePointer.isDown && ( (game.input.activePointer.position.y < player.y-10|| game.input.activePointer.position.y >player.y+10) &&
+            (game.input.activePointer.position.x < player.x-10 || game.input.activePointer.position.x  > player.x+10) ) )) {
+                if (cursors.up.isDown || (game.input.activePointer.isDown && game.input.activePointer.position.y < player.y-10)) {
+                    player.body.velocity.y -= 75;
+                }
+                else {
+                    player.body.velocity.y += 75;
+                }
+                if (cursors.left.isDown || (game.input.activePointer.isDown && game.input.activePointer.position.x < player.x-10)) {
+                    player_direction = 4;
+                    player.body.velocity.x -= player_speed_diagonal;
+                }
+                else {
+                    player_direction = 6;
+                    player.body.velocity.x += player_speed_diagonal;
+                }
+            }
+            else if (cursors.up.isDown || (game.input.activePointer.isDown && game.input.activePointer.position.y < player.y-10) ) {
+                player_direction = 8;
+                player.body.velocity.y -= player_speed;
+            }
+            else if (cursors.down.isDown || (game.input.activePointer.isDown && game.input.activePointer.position.y > player.y+10)) {
+                player_direction = 2;
+                player.body.velocity.y += player_speed;
+            }
+            else if (cursors.left.isDown || (game.input.activePointer.isDown && game.input.activePointer.position.x < player.x-10)) {
+                player_direction = 4;
+                player.body.velocity.x -= player_speed;
+            }
+            else if (cursors.right.isDown || (game.input.activePointer.isDown && game.input.activePointer.position.x > player.x+10)) {
+                player_direction = 6;
+                player.body.velocity.x += player_speed;
+            }
+            
+        }
     }
     
     //Toasts behavior
@@ -403,41 +468,24 @@ function collisionBuildingToast (building, toast) {
     toast.y = -10000;
     
     //Shake screen
-    shakeWorld = 3;
+    shakeTime = shakeTimeBase/3;
     shakeForce = shakeForceBase/2;
 }
 
 function collisionEnemyToast (enemy, toast) {
     //"Destroy" the enemy
-    var rand_decision = game.rnd.integerInRange(0,3);
-    switch(rand_decision) {
-        case 0:
-            enemy.x = -game.rnd.integerInRange(1,3)*SCREEN_WIDTH/2;
-            enemy.y = game.rnd.integerInRange(enemy_y_min,enemy_y_max);
-            break;
-        case 1:
-            enemy.x = game.rnd.integerInRange(2,4)*SCREEN_WIDTH/2;
-            enemy.y = game.rnd.integerInRange(enemy_y_min,enemy_y_max);
-            break; 
-        case 2:
-            enemy.x = game.rnd.integerInRange(enemy_x_min,enemy_x_max);
-            enemy.y = -game.rnd.integerInRange(1,3)*SCREEN_HEIGHT/2;
-            break;
-        case 3:
-            enemy.x = game.rnd.integerInRange(enemy_x_min,enemy_x_max);
-            enemy.y = game.rnd.integerInRange(2,4)*SCREEN_HEIGHT/2;
-            break;  
-        default:
-            break;
-    }
+    destroyEnemy(enemy);
+    audio_explosion.play();
     
     //"Destroy" the toast
-    toast.enabled = false;
-    toast.x = -10000;
-    toast.y = -10000;
+    if(player_powerup != 3) { //Nutella powerup goes through enemies
+        toast.enabled = false;
+        toast.x = -10000;
+        toast.y = -10000;
+    }
     
     //Shake screen
-    shakeWorld = 5;
+    shakeTime = shakeTimeBase;
     shakeForce = shakeForceBase;
     
     // Add score
@@ -446,38 +494,118 @@ function collisionEnemyToast (enemy, toast) {
 
 function collisionEnemyPlayer (player, enemy) {
     //"Destroy" the enemy
-    var rand_decision = game.rnd.integerInRange(0,3);
-    switch(rand_decision) {
-        case 0:
-            enemy.x = -game.rnd.integerInRange(1,3)*SCREEN_WIDTH/2;
-            enemy.y = game.rnd.integerInRange(enemy_y_min,enemy_y_max);
-            break;
-        case 1:
-            enemy.x = game.rnd.integerInRange(2,4)*SCREEN_WIDTH/2;
-            enemy.y = game.rnd.integerInRange(enemy_y_min,enemy_y_max);
-            break; 
-        case 2:
-            enemy.x = game.rnd.integerInRange(enemy_x_min,enemy_x_max);
-            enemy.y = -game.rnd.integerInRange(1,3)*SCREEN_HEIGHT/2;
-            break;
-        case 3:
-            enemy.x = game.rnd.integerInRange(enemy_x_min,enemy_x_max);
-            enemy.y = game.rnd.integerInRange(2,4)*SCREEN_HEIGHT/2;
-            break;  
-        default:
-            break;
-    }
+    destroyEnemy(enemy);
+    audio_hurt.play();
     
     //Shake screen
-    shakeWorld = 4;
+    shakeTime = shakeTimeBase/2;
     shakeForce = shakeForceBase;
     
     //Hurt player
     player_hurt = 30;
 }
 
+function collisionPlayerPowerup (player, powerup) {
+    //"Destroy" the powerup
+    powerup.enabled = false;
+    powerup.x = -10000;
+    powerup.y = -10000;
+    
+    //Obtain power
+    player_prize = 30;
+    switch(powerup.frame) {
+        case 0: //Butter
+            player_powerup = 1;
+            player_shooting_cadence = 200;
+            changeToasts('butter');
+            player_speed = 150 * (SCREEN_WIDTH / 640);
+            player_speed_diagonal = player_speed * 0.75;
+            break;
+        case 1: //Mermelade
+            player_powerup = 2;
+            player_shooting_cadence = 100;
+            changeToasts('mermelade');
+            player_speed = 100 * (SCREEN_WIDTH / 640);
+            player_speed_diagonal = player_speed * 0.75;
+            break;
+        case 2: //Nutella
+            player_powerup = 3;
+            player_shooting_cadence = 200;
+            changeToasts('nutella');
+            player_speed = 100 * (SCREEN_WIDTH / 640);
+            player_speed_diagonal = player_speed * 0.75;
+            break;
+        default:
+            break;
+    }
+    
+    //Shake screen
+    shakeTime = shakeTimeBase/3;
+    shakeForce = shakeForceBase/2;
+}
+
+function changeToasts(topping) {
+    for (var i = 0; i < toasts.children.length; i++) {
+        var aux_frame = toasts.children[i].frame;
+        toasts.children[i].loadTexture(topping);
+        toasts.children[i].frame = aux_frame;
+    }
+}
+
+function destroyEnemy (enemy) {
+    explosion.x = enemy.x-(enemy.width/2);
+    explosion.y = enemy.y-(enemy.height/2);
+    explosion.animations.play('explode');
+    
+    var rand_decision = game.rnd.integerInRange(0,3);
+    switch(rand_decision) {
+        case 0:
+            enemy.x = -game.rnd.integerInRange(1,2)*SCREEN_WIDTH/2;
+            enemy.y = game.rnd.integerInRange(enemy_y_min,enemy_y_max);
+            break;
+        case 1:
+            enemy.x = game.rnd.integerInRange(3,4)*SCREEN_WIDTH/2;
+            enemy.y = game.rnd.integerInRange(enemy_y_min,enemy_y_max);
+            break; 
+        case 2:
+            enemy.x = game.rnd.integerInRange(enemy_x_min,enemy_x_max);
+            enemy.y = -game.rnd.integerInRange(1,2)*SCREEN_HEIGHT/2;
+            break;
+        case 3:
+            enemy.x = game.rnd.integerInRange(enemy_x_min,enemy_x_max);
+            enemy.y = game.rnd.integerInRange(3,4)*SCREEN_HEIGHT/2;
+            break;  
+        default:
+            break;
+    }
+}
+
 function addScore (points) {
     //  Add and update the score
     score += points;
     scoreText.text = 'Score: ' + score;
+    
+    // Game progress
+    if(score%100 == 0) {
+        shakeForceBase++;
+        shakeTimeBase++;
+        newPowerup();
+        incrementAudioVolume();
+    } 
+}
+
+function newPowerup () {
+    powerups.enabled = true;
+    powerups.frame = game.rnd.integerInRange(0,2);
+    while (powerups.frame+1 == player_powerup) powerups.frame = game.rnd.integerInRange(0,2);
+    powerups.x = game.rnd.integerInRange(230 / 640 * SCREEN_WIDTH, 412 / 640 * SCREEN_WIDTH);
+    while (Math.abs(powerups.x-player.x) < 40) powerups.x = game.rnd.integerInRange(230 / 640 * SCREEN_WIDTH, 412 / 640 * SCREEN_WIDTH);
+    powerups.y = game.rnd.integerInRange(47 / 360 * SCREEN_HEIGHT, 236 / 360 * SCREEN_HEIGHT);
+}
+
+function incrementAudioVolume() {
+    audio_explosion.volume += 0.02;
+    audio_hurt.volume += 0.02;
+    audio_preshoot.volume += 0.02;
+    audio_shoot.volume += 0.02;
 }
