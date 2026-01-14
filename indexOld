@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=en> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang=en><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang=en><![endif]-->
+<!--[if (IE 9)]><html class="no-js ie9" lang=en><![endif]-->
+<!--[if gt IE 8]><!--> <html lang=en-US> <!--<![endif]-->
+<head>
+<link rel='shortcut icon' type=image/x-icon href=include/img/favicon.ico />
+<meta http-equiv=Content-Type content="text/html; charset=UTF-8" />
+<title>Albert Carrión Díaz | Game Developer</title>
+<meta name=description content="Get to know who Albert Carrión Díaz is." />
+<meta name=viewport content="width=device-width, initial-scale=1.0">
+<meta name=HandheldFriendly content="true"/>
+<meta name=MobileOptimized content="320"/>
+<!--[if IEMobile]> <meta http-equiv=cleartype content=on> <![endif]-->
+<link href=include/css/bootstrap.min.css rel=stylesheet>
+<link href=include/css/main.css rel=stylesheet>
+<link href=include/css/supersized.css rel=stylesheet>
+<link href=include/css/supersized.shutter.css rel=stylesheet>
+<link href=include/css/fancybox/jquery.fancybox.css rel=stylesheet>
+<link href=include/css/fonts.css rel=stylesheet>
+<link href=include/css/shortcodes.css rel=stylesheet>
+<link href=include/css/bootstrap-responsive.min.css rel=stylesheet>
+<link href=include/css/responsive.css rel=stylesheet>
+<link href=include/css/supersized.css rel=stylesheet>
+<link href=include/css/supersized.shutter.css rel=stylesheet>
+<link href='http://fonts.googleapis.com/css?family=Titillium+Web:400,200,200italic,300,300italic,400italic,600,600italic,700,700italic,900' rel=stylesheet type=text/css>
+<link rel="shortcut icon" href=#>
+<link rel=apple-touch-icon href=#>
+<link rel=apple-touch-icon sizes=114x114 href=#>
+<link rel=apple-touch-icon sizes=72x72 href=#>
+<link rel=apple-touch-icon sizes=144x144 href=#>
+<script src=include/js/modernizr.js></script>
+</head>
+<body>
+<div class=ole>
+<section id=jSplash>
+<div id=circle></div>
+</section>
+</div>
+<div id=home-slider>
+<div class=control-nav>
+<a id=prevslide class=load-item><i class=font-icon-arrow-simple-left></i></a>
+<a id=nextslide class=load-item><i class=font-icon-arrow-simple-right></i></a>
+<ul id=slide-list></ul>
+<a id=nextsection href=#work><i class=font-icon-arrow-simple-down></i></a>
+</div>
+</div>
+<header>
+<div class=sticky-nav>
+<a id=mobile-nav class=menu-nav href=#menu-nav></a>
+<div id=logo>
+<a id=goUp href=#home-slider title="Albert Carrión Díaz | Game Developer">Albert Carrión Díaz</a>
+</div>
+<nav id=menu>
+<ul id=menu-nav>
+<li class=current><a href=#home-slider>Home</a></li>
+<li><a href=#work>My work</a></li>
+<li><a href=#about>About me</a></li>
+<li><a href=#contact>Contact</a></li>
+<li><a href=https://kurnic.wordpress.com class=external>Blog</a></li>
+</ul>
+</nav>
+</div>
+</header>
+<div id=work class=page>
+<div class=container>
+<div class=row>
+<div class=span12>
+<div class=title-page>
+<h2 class=title>Website not updated since 2017.</h2>
+<h2 class=title>My work</h2>
+<h3 class=title-description>Check some little previews of my projects. Click to learn more about them on my <a href=https://kurnic.wordpress.com class=external>Blog</a>. </h3>
+<h7>(Projects information will be opened in a new window or tab)</h7>
+</div>
+</div>
+</div>
+<div class=row>
+<div class=span3>
+<nav id=options class=work-nav>
+<ul id=filters class=option-set data-option-key=filter>
+<li class=type-work>Type of Work</li>
+<li><a href=#filter data-option-value=* class=selected>All Projects</a></li>
+<li><a href=#filter data-option-value=.programming>Programming</a></li>
+<li><a href=#filter data-option-value=.design>Game Design</a></li>
+<li><a href=#filter data-option-value=.art>Art</a></li>
+</ul>
+</nav>
+</div>
+<div class=span9>
+<div class=row>
+<section id=projects>
+<ul id=thumbs>
+<li class="item-thumbs span3 art">
+<a href=https://kurnic.wordpress.com/portfolio/2017-t-shirt-designs/ class=external target=_blank><big>2017 T-shirt designs</big></a>
+<a class="hover-wrap fancybox" data-fancybox-group=gallery title="2017 T-shirt designs" href=https://kurnic.wordpress.com/portfolio/2017-t-shirt-designs/ class=external target=_blank>
+<span class=overlay-img><br><br><br><h2 class=title align=center>2017</h2></span>
+</a>
+<img src=include/img/work/thumbs/2017tshirts.jpg alt>
+</li>
+<li class="item-thumbs span3 design programming art">
+<a href=https://kurnic.itch.io/arms-64 class=external target=_blank><big>Arms 64 (Jam version)</big></a>
+<a class="hover-wrap fancybox" data-fancybox-group=gallery title="Arms 64 (Jam version)" href=https://kurnic.itch.io/arms-64 class=external target=_blank>
+<span class=overlay-img><br><br><br><h2 class=title align=center>August 2017</h2></span>
+</a>
+<img src=include/img/work/thumbs/arms64jam.jpg alt>
+</li>
+<li class="item-thumbs span3 design programming art">
+<a href=https://kurnic.wordpress.com/portfolio/apes-n-spells-demo/ class=external target=_blank><big>Apes 'n' Spells</big></a>
+<a class="hover-wrap fancybox" data-fancybox-group=gallery title="Apes 'n' Spells" href=https://kurnic.wordpress.com/portfolio/apes-n-spells-demo/ class=external target=_blank>
+<span class=overlay-img><br><br><br><h2 class=title align=center>April 2017</h2></span>
+</a>
+<img src=include/img/work/thumbs/apesnspells.jpg alt>
+</li>
+<li class="item-thumbs span3 design programming">
+<a href=https://kurnic.wordpress.com/portfolio/voxel-tanks-security-breach/ class=external target=_blank><big>Voxel Tanks: Security Breach</big></a>
+<a class="hover-wrap fancybox" data-fancybox-group=gallery title="Voxel Tanks: Security Breach" href=https://kurnic.wordpress.com/portfolio/voxel-tanks-security-breach/ class=external target=_blank>
+<span class=overlay-img><br><br><br><h2 class=title align=center>June 2016</h2></span>
+</a>
+<img src=include/img/work/thumbs/voxeltanks.jpg alt>
+</li>
+<li class="item-thumbs span3 design programming art">
+<a href=https://kurnic.wordpress.com/portfolio/super-toaster-shooter/ class=external target=_blank><big>Super Toaster Shooter</big></a>
+<a class="hover-wrap fancybox" data-fancybox-group=gallery title="Super Toaster Shooter" href=https://kurnic.wordpress.com/portfolio/super-toaster-shooter/ class=external target=_blank>
+<span class=overlay-img><br><br><br><h2 class=title align=center>October 2015</h2></span>
+</a>
+<img src=include/img/work/thumbs/supertoastershooter.jpg alt>
+</li>
+<li class="item-thumbs span3 programming">
+<a href=https://kurnic.wordpress.com/portfolio/snake-advance/ class=external target=_blank><big>Snake Advance </big></a>
+<a class="hover-wrap fancybox" data-fancybox-group=gallery title="Snake Advance" href=https://kurnic.wordpress.com/portfolio/snake-advance/ class=external target=_blank>
+<span class=overlay-img><br><br><br><h2 class=title align=center>October 2015</h2></span>
+</a>
+<img src=include/img/work/thumbs/snakeadvance.jpg alt>
+</li>
+<li class="item-thumbs span3 design programming">
+<a href=https://kurnic.wordpress.com/portfolio/super-red-rope-puzzles/ class=external target=_blank><big>Super Red Rope Puzzles </big></a>
+<a class="hover-wrap fancybox" data-fancybox-group=gallery title="Super Red Rope Puzzles" href=https://kurnic.wordpress.com/portfolio/super-red-rope-puzzles/ class=external target=_blank>
+<span class=overlay-img><br><br><br><h2 class=title align=center>September 2015</h2></span>
+</a>
+<img src=include/img/work/thumbs/superredropepuzzles.jpg alt>
+</li>
+<li class="item-thumbs span3 design">
+<a href=https://kurnic.wordpress.com/portfolio/onevione-noob/ class=external target=_blank><big>Onevione Noob!</big></a>
+<a class="hover-wrap fancybox" data-fancybox-group=gallery title="Onevione Noob!" href=https://kurnic.wordpress.com/portfolio/onevione-noob/ class=external target=_blank>
+<span class=overlay-img><br><br><br><h2 class=title align=center>September 2015</h2></span>
+</a>
+<img src=include/img/work/thumbs/onevione.jpg alt>
+</li>
+<li class="item-thumbs span3 art">
+<a href=https://kurnic.wordpress.com/portfolio/minion-kinton-t-shirt-design/ class=external target=_blank><big>Minion Kinton T-shirt Design </big></a>
+<a class="hover-wrap fancybox" data-fancybox-group=gallery title="Minion Kinton T-shirt Design" href=https://kurnic.wordpress.com/portfolio/minion-kinton-t-shirt-design/ class=external target=_blank>
+<span class=overlay-img><br><br><br><h2 class=title align=center>July 2015</h2></span>
+</a>
+<img src=include/img/work/thumbs/minionshirt2.jpg alt>
+</li>
+<li class="item-thumbs span3 design programming">
+<a href=https://kurnic.wordpress.com/portfolio/procedural-generation-applied-to-a-video-game-level-design/ class=external target=_blank><big>Bachelor's Thesis </big></a>
+<a class="hover-wrap fancybox" data-fancybox-group=gallery title="Bachelor's Thesis" href=https://kurnic.wordpress.com/portfolio/procedural-generation-applied-to-a-video-game-level-design/ class=external target=_blank>
+<span class=overlay-img><br><br><br><h2 class=title align=center>July 2015</h2></span>
+</a>
+<img src=include/img/work/thumbs/bachelorthesis.jpg alt>
+</li>
+<li class="item-thumbs span3 design programming">
+<a href=https://kurnic.wordpress.com/portfolio/albuquerque-4000/ class=external target=_blank><big>Albuquerque 4000 </big></a>
+<a class="hover-wrap fancybox" data-fancybox-group=gallery title="Albuquerque 4000" href=https://kurnic.wordpress.com/portfolio/albuquerque-4000/ class=external target=_blank>
+<span class=overlay-img><br><br><br><h2 class=title align=center>March 2015</h2></span>
+</a>
+<img src=include/img/work/thumbs/albuquerque.jpg alt>
+</li>
+<li class="item-thumbs span3 design programming art">
+<a href=https://kurnic.wordpress.com/portfolio/mr-penguin/ class=external target=_blank><big>Mr Penguin </big></a>
+<a class="hover-wrap fancybox" data-fancybox-group=gallery title="Mr Penguin" href=https://kurnic.wordpress.com/portfolio/mr-penguin/ class=external target=_blank>
+<span class=overlay-img><br><br><br><h2 class=title align=center>December 2014</h2></span>
+</a>
+<img src=include/img/work/thumbs/mrpenguin.jpg alt>
+</li>
+<li class="item-thumbs span3 art">
+<a href=https://kurnic.wordpress.com/portfolio/vitruvian-minion-t-shirt-design/ class=external target=_blank><big>Vitruvian Minion T-shirt Design </big></a>
+<a class="hover-wrap fancybox" data-fancybox-group=gallery title="Vitruvian Minion T-shirt Design" href=https://kurnic.wordpress.com/portfolio/vitruvian-minion-t-shirt-design/ class=external target=_blank>
+<span class=overlay-img><br><br><br><h2 class=title align=center>December 2014</h2></span>
+</a>
+<img src=include/img/work/thumbs/minionshirt.jpg alt>
+</li>
+<li class="item-thumbs span3 design programming art">
+<a href=https://kurnic.wordpress.com/portfolio/super-butchers-n-knives/ class=external target=_blank><big>Super Butchers n Knives </big></a>
+<a class="hover-wrap fancybox" data-fancybox-group=gallery title="Super Butchers n Knives" href=https://kurnic.wordpress.com/portfolio/super-butchers-n-knives/ class=external target=_blank>
+<span class=overlay-img><br><br><br><h2 class=title align=center>October 2014</h2></span>
+</a>
+<img src=include/img/work/thumbs/superbutchersnknives.jpg alt>
+</li>
+<li class="item-thumbs span3 art">
+<a href=https://kurnic.wordpress.com/portfolio/smash-bros-t-shirt-design/ class=external target=_blank><big>Smash Bros T-shirt Design </big></a>
+<a class="hover-wrap fancybox" data-fancybox-group=gallery title="Smash Bros T-shirt Design" href=https://kurnic.wordpress.com/portfolio/smash-bros-t-shirt-design/ class=external target=_blank>
+<span class=overlay-img><br><br><br><h2 class=title align=center>August 2014</h2></span>
+</a>
+<img src=include/img/work/thumbs/smashshirt.jpg alt>
+</li>
+<li class="item-thumbs span3 design programming art">
+<a href=https://kurnic.wordpress.com/portfolio/flappy-jetpack/ class=external target=_blank><big>Flappy Jetpack </big></a>
+<a class="hover-wrap fancybox" data-fancybox-group=gallery title="Flappy Jetpack " href=https://kurnic.wordpress.com/portfolio/flappy-jetpack/ class=external target=_blank>
+<span class=overlay-img><br><br><br><h2 class=title align=center>2013</h2></span>
+</a>
+<img src=include/img/work/thumbs/flappyjetpack.jpg alt>
+</li>
+<li class="item-thumbs span3 art">
+<a href=https://kurnic.wordpress.com/portfolio/custom-t-shirts-painted/ class=external target=_blank><big>Hand-painted T-shirts </big></a>
+<a class="hover-wrap fancybox" data-fancybox-group=gallery title="Hand-painted T-shirts" href=https://kurnic.wordpress.com/portfolio/custom-t-shirts-painted/ class=external target=_blank>
+<span class=overlay-img><br><br><br><h2 class=title align=center>2012-2013</h2></span>
+</a>
+<img src=include/img/work/thumbs/customshirts.jpg alt>
+</li>
+<li class="item-thumbs span3 design">
+<a href=https://kurnic.wordpress.com/portfolio/pum-pum-pam/ class=external target=_blank><big>Pum Pum Pam! </big></a>
+<a class="hover-wrap fancybox" data-fancybox-group=gallery title="Pum Pum Pam! " href=https://kurnic.wordpress.com/portfolio/pum-pum-pam/ class=external target=_blank>
+<span class=overlay-img><br><br><br><h2 class=title align=center>2013</h2></span>
+</a>
+<img src=include/img/work/thumbs/pumpumpam.jpg alt>
+</li>
+<li class="item-thumbs span3 design">
+<a href=https://kurnic.wordpress.com/portfolio/tales-de-camelot-in-catalan/ class=external target=_blank><big>Tales de Camelot </big></a>
+<a class="hover-wrap fancybox" data-fancybox-group=gallery title="Tales de Camelot " href=https://kurnic.wordpress.com/portfolio/tales-de-camelot-in-catalan/ class=external target=_blank>
+<span class=overlay-img><br><br><br><h2 class=title align=center>2011</h2></span>
+</a>
+<img src=include/img/work/thumbs/talesdecamelot.jpg alt>
+</li>
+<li class="item-thumbs span3 design programming art">
+<a href=https://kurnic.wordpress.com/portfolio/high-school-thesis-about-video-games/ class=external target=_blank><big>High School Thesis </big></a>
+<a class="hover-wrap fancybox" data-fancybox-group=gallery title="High School Thesis " href=https://kurnic.wordpress.com/portfolio/high-school-thesis-about-video-games/ class=external target=_blank>
+<span class=overlay-img><br><br><br><h2 class=title align=center>2011</h2></span>
+</a>
+<img src=include/img/work/thumbs/TR.jpg alt>
+</li>
+</ul>
+</section>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id=about class=page-alternate>
+<div class=container>
+<div class=row>
+<div class=span12>
+<div class=title-page>
+<h2 class=title>About me</h2>
+<h3 class=title-description>Who am I?</h3>
+</div>
+</div>
+</div>
+<div class=row>
+<div class="span4 profile">
+</div>
+<div class="span4 profile">
+<div class=image-wrap>
+<div class=hover-wrap>
+<span class=overlay-text-thumb><h1 class=title> This is me!</h1></span>
+</div>
+<img src=include/img/profile/profile-01.jpg alt="Albert Carrión Díaz">
+</div>
+</div>
+</div>
+<h3 class=profile-name>Albert Carrión Díaz (AKA Kurnic)</h3>
+<p class=profile-description>I am Albert Carrión Díaz, a 24-year-old Computer Science graduate of UPC FIB (Barcelona). Luckily, I was born surrounded by video games and I grew to love them quickly. I have always been playing all kind of games and thinking about how they could be more interesting or fun. I also found I liked math and trying to do creative work, so making video games was perfect for me. I really enjoy figuring out how to create those pieces of fun and I feel I still have a long way to keep learning about it. </p>
+</div>
+</div>
+<div id=contact class=page>
+<div class=container>
+<div class=row>
+<div class=span12>
+<div class=title-page>
+<h2 class=title>Contact</h2>
+<div id=social-area class=page>
+<div class=container>
+<div class=row>
+<div class=span12>
+<nav id=social>
+<ul>
+<li><a href=mailto:NoLongerSupportingEmailDueToSpamSorry title="My e-mail" target=_blank><span class=font-icon-email></span></a></li>
+<li><a href=https://kurnic.wordpress.com title="My blog" target=_blank><span class=font-icon-social-wordpress></span></a></li>
+<li><a href=https://www.linkedin.com/in/albertcarriondiaz title="My LinkedIn profile" target=_blank><span class=font-icon-social-linkedin></span></a></li>
+<li><a href=https://twitter.com/kurnic title="My Twitter profile" target=_blank><span class=font-icon-social-twitter></span></a></li>
+<li><a href=https://www.youtube.com/user/kurnic title="My Youtube channel" target=_blank><span class=font-icon-social-youtube></span></a></li>
+<li><a href=https://www.redbubble.com/es/people/kurnic?asc=u title="My Redbubble page" target=_blank><span class=font-icon-user-border></span></a></li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+</div>
+<h3 class=title-description>Feel free to use one of the many social links above to get in touch or discover more about me!</h3>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id=twitterfeed class=page-alternate>
+<div class=container>
+<div class=row>
+<div class=span12>
+<div class=title-page>
+<a class=twitter-timeline data-dnt=true href=https://twitter.com/kurnic data-widget-id=566980417325375489>Tweets by @kurnic</a>
+<script>!function(f,a,g){var e,b=f.getElementsByTagName(a)[0],c=/^http:/.test(f.location)?"http":"https";if(!f.getElementById(g)){e=f.createElement(a);e.id=g;e.src=c+"://platform.twitter.com/widgets.js";b.parentNode.insertBefore(e,b)}}(document,"script","twitter-wjs");</script>
+<div class=follow>
+<a href=https://twitter.com/kurnic title="Follow Me on Twitter" target=_blank><i class=font-icon-social-twitter></i></a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<footer>
+<p class=credits> This website uses an adapted version of: &copy;2013 Brushed. <a href=http://themes.alessioatzeni.com/html/brushed/ title="Brushed | Responsive One Page Template">Brushed Template</a> by <a href=http://www.alessioatzeni.com/ title="Alessio Atzeni | Web Designer &amp; Front-end Developer">Alessio Atzeni</a>
+</br> And uses fonts from: <a href=http://somepx.itch.io/somepxfont title="Somepx's fonts">Somepx</a></p>
+</footer>
+<a id=back-to-top href=#>
+<i class=font-icon-arrow-simple-up></i>
+</a>
+<script src=http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js></script>
+<script src=include/js/bootstrap.min.js></script>
+<script src=include/js/supersized.3.2.7.min.js></script>
+<script src=include/js/waypoints.js></script>
+<script src=include/js/waypoints-sticky.js></script>
+<script src=include/js/jquery.isotope.js></script>
+<script src=include/js/jquery.fancybox.pack.js></script>
+<script src=include/js/jquery.fancybox-media.js></script>
+<script src=include/js/jquery.tweet.js></script>
+<script src=include/js/plugins.js></script>
+<script src=include/js/main.js></script>
+</body>
+</html>
