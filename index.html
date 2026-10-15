@@ -1,63 +1,714 @@
-<!DOCTYPE html>
-<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=en> <![endif]-->
-<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang=en><![endif]-->
-<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang=en><![endif]-->
-<!--[if (IE 9)]><html class="no-js ie9" lang=en><![endif]-->
-<!--[if gt IE 8]><!--> <html lang=en-US> <!--<![endif]-->
+<!doctype html>
+<html lang="en">
 <head>
-<link rel='shortcut icon' type=image/x-icon href=include/img/favicon.ico />
-<meta http-equiv=Content-Type content="text/html; charset=UTF-8" />
-<title>Kurnic homepage WIP</title>
-<meta name=description content="WIP" />
-<meta name=viewport content="width=device-width, initial-scale=1.0">
-<meta name=HandheldFriendly content="true"/>
-<meta name=MobileOptimized content="320"/>
-<!--[if IEMobile]> <meta http-equiv=cleartype content=on> <![endif]-->
-<link href=include/css/bootstrap.min.css rel=stylesheet>
-<link href=include/css/main.css rel=stylesheet>
-<link href=include/css/supersized.css rel=stylesheet>
-<link href=include/css/supersized.shutter.css rel=stylesheet>
-<link href=include/css/fancybox/jquery.fancybox.css rel=stylesheet>
-<link href=include/css/fonts.css rel=stylesheet>
-<link href=include/css/shortcodes.css rel=stylesheet>
-<link href=include/css/bootstrap-responsive.min.css rel=stylesheet>
-<link href=include/css/responsive.css rel=stylesheet>
-<link href=include/css/supersized.css rel=stylesheet>
-<link href=include/css/supersized.shutter.css rel=stylesheet>
-<link href='http://fonts.googleapis.com/css?family=Titillium+Web:400,200,200italic,300,300italic,400italic,600,600italic,700,700italic,900' rel=stylesheet type=text/css>
-<link rel="shortcut icon" href=#>
-<link rel=apple-touch-icon href=#>
-<link rel=apple-touch-icon sizes=114x114 href=#>
-<link rel=apple-touch-icon sizes=72x72 href=#>
-<link rel=apple-touch-icon sizes=144x144 href=#>
-<script src=include/js/modernizr.js></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#11132f">
+  <meta name="description" content="Kurnic's personal archive: games, projects, experiments and other stuff archived for easy sharing.">
+  <title>Kurnic — Personal Archive</title>
+  <script>document.documentElement.classList.add('js');</script>
+  <style>
+    :root {
+      --ink: #f5f6ff;
+      --muted: #a8aecb;
+      --night: #080a19;
+      --panel: rgba(20, 25, 58, .92);
+      --panel-2: rgba(27, 35, 79, .95);
+      --line: #364a91;
+      --line-bright: #6787ff;
+      --gold: #ffd34e;
+      --pink: #ff5ab7;
+      --cyan: #50e9ff;
+      --mint: #5cf2bd;
+      --purple: #8c73ff;
+      --cursor: url("data:image/png;base64,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") 8 3, pointer;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      background:
+        radial-gradient(ellipse at 50% -15%, rgba(70, 79, 177, .45), transparent 53%),
+        radial-gradient(ellipse at 4% 35%, rgba(27, 107, 177, .15), transparent 35%),
+        radial-gradient(ellipse at 95% 78%, rgba(159, 42, 143, .12), transparent 35%),
+        var(--night);
+      font-family: "Trebuchet MS", "Arial Rounded MT Bold", Arial, sans-serif;
+      overflow-x: hidden;
+      cursor: var(--cursor);
+    }
+    body::before {
+      content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 50;
+      opacity: .17;
+      background-image: radial-gradient(rgba(255,255,255,.32) .7px, transparent .8px);
+      background-size: 4px 4px;
+      mix-blend-mode: screen;
+    }
+    body::after {
+      content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 51;
+      opacity: .09;
+      background: repeating-linear-gradient(to bottom, transparent 0, transparent 3px, rgba(0,0,0,.7) 4px, transparent 5px);
+    }
+    a, button, summary, [role="button"] { cursor: var(--cursor); }
+    input, textarea { cursor: text; }
+    button, input { font: inherit; }
+    button { color: inherit; }
+    a { color: inherit; text-decoration: none; }
+    .shell { width: min(1500px, calc(100% - 36px)); margin: 0 auto; position: relative; z-index: 1; }
+    .topbar {
+      height: 76px; display: flex; align-items: center; justify-content: space-between;
+      gap: 20px; border-bottom: 1px solid rgba(114, 141, 255, .58);
+      position: relative;
+    }
+    .topbar::after { content: ""; height: 3px; width: 100%; position: absolute; bottom: -2px; left: 0; background: linear-gradient(90deg, var(--gold), var(--pink), var(--cyan), transparent 85%); opacity: .65; }
+    .brand { display: flex; align-items: center; min-width: 0; gap: 12px; }
+    .brand-mark {
+      display: grid; place-items: center; height: 43px; min-width: 130px; padding: 0 28px;
+      flex: 0 0 auto; white-space: nowrap;
+      clip-path: polygon(16% 0, 100% 0, 84% 100%, 0 100%);
+      background: linear-gradient(145deg, #fff07a, #ff9e1b 65%, #ff5f70);
+      color: #171327; font: 900 clamp(22px, 2vw, 30px)/1 Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+      text-shadow: 2px 2px 0 rgba(255,255,255,.2); transform: skew(-4deg);
+      box-shadow: 0 0 18px rgba(255, 194, 52, .32);
+    }
+    .brand-title { font: 900 clamp(23px, 3vw, 31px)/.9 Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif; letter-spacing: 1.4px; text-transform: uppercase; text-shadow: 2px 2px 0 #39447b; }
+    .brand-subtitle { color: var(--muted); font: 700 10px/1.5 Consolas, monospace; letter-spacing: 2px; margin-top: 5px; text-transform: uppercase; }
+    .header-actions { display: flex; align-items: center; gap: 10px; }
+    .header-link, .sound-button {
+      display: inline-flex; align-items: center; gap: 8px; min-height: 36px; padding: 8px 11px;
+      color: #c9d2f9; background: rgba(27, 35, 79, .55); border: 1px solid rgba(105, 130, 218, .37);
+      border-radius: 7px; font-weight: 800; font-size: 12px; letter-spacing: .4px; transition: .16s ease;
+    }
+    .header-link:hover, .sound-button:hover { border-color: var(--cyan); color: #fff; transform: translateY(-2px); box-shadow: 0 0 16px rgba(80,233,255,.12); }
+    .sound-button { appearance: none; }
+    .online { display: inline-flex; align-items: center; gap: 7px; padding-left: 7px; color: var(--mint); font: 700 11px Consolas, monospace; white-space: nowrap; }
+    .online-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--mint); box-shadow: 0 0 11px var(--mint); }
+
+    .hero { text-align: center; padding: 28px 0 16px; }
+    .eyebrow { color: var(--cyan); text-transform: uppercase; letter-spacing: 3px; font: 700 10px Consolas, monospace; margin-bottom: 8px; }
+    .hero-title {
+      width: fit-content; max-width: 100%; margin: 0 auto; padding: 5px 40px 11px;
+      color: #fff4b6; background: linear-gradient(180deg, rgba(62, 70, 145, .45), rgba(24, 29, 73, .4));
+      border: 1px solid rgba(96, 128, 255, .62); border-top: 2px solid var(--gold);
+      clip-path: polygon(7% 0, 93% 0, 100% 100%, 0 100%);
+      font: 900 clamp(27px, 4.2vw, 48px)/1 Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+      letter-spacing: 2px; text-transform: uppercase; text-shadow: 3px 3px 0 #4d3f75, 0 0 20px rgba(255,211,78,.18);
+    }
+    .hero-subtitle { margin: 10px auto 0; color: #b9c3ef; font-size: 13px; letter-spacing: .3px; }
+    .hero-subtitle strong { color: var(--gold); }
+    .system-stats { display: flex; justify-content: center; flex-wrap: wrap; gap: 14px; margin-top: 12px; color: #8f9ad0; font: 700 10px Consolas, monospace; letter-spacing: 1px; }
+    .system-stats span::before { content: "◆"; color: var(--pink); font-size: 8px; margin-right: 6px; }
+
+    .control-panel {
+      background: linear-gradient(180deg, rgba(22, 28, 70, .86), rgba(12, 16, 39, .88));
+      border: 1px solid rgba(89, 111, 192, .55); border-radius: 12px; padding: 13px;
+      box-shadow: 0 14px 34px rgba(0,0,0,.18), inset 0 1px rgba(255,255,255,.04);
+    }
+    .control-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+    .type-filters { display: flex; align-items: center; flex-wrap: wrap; gap: 7px; }
+    .filter-button {
+      position: relative; border: 1px solid #354b96; color: #d1d8ff; background: #121a42;
+      min-height: 38px; padding: 9px 15px; border-radius: 7px;
+      font: 800 12px/1 Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif; letter-spacing: .7px;
+      text-transform: uppercase; transition: transform .16s ease, background .16s ease, box-shadow .16s ease, border .16s ease;
+    }
+    .filter-button:hover { transform: translateY(-2px); border-color: var(--cyan); color: #fff; }
+    .filter-button[aria-pressed="true"] { color: #17132a; background: linear-gradient(180deg, #fff17a, #ffb52d); border-color: #fff0a1; box-shadow: 0 0 0 2px rgba(255,211,78,.2), 0 0 19px rgba(255,184,44,.34); }
+    .filter-button[data-type="project"] { border-bottom-color: var(--pink); }
+    .filter-button[data-type="game"] { border-bottom-color: var(--mint); }
+    .filter-button[data-type="experiment"] { border-bottom-color: var(--yellow); }
+    .filter-button[data-type="link"] { border-bottom-color: var(--purple); }
+    .search-wrap { position: relative; flex: 0 1 300px; min-width: 200px; }
+    .search-wrap svg { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--cyan); pointer-events: none; }
+    .search { width: 100%; border: 1px solid #344b91; border-radius: 7px; color: #fff; background: #080d25; padding: 11px 12px 11px 37px; outline: none; font-size: 12px; }
+    .search::placeholder { color: #737fae; }
+    .search:focus { border-color: var(--cyan); box-shadow: 0 0 0 3px rgba(80,233,255,.12); }
+    .tag-area { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-top: 12px; padding-top: 11px; border-top: 1px solid rgba(102, 123, 201, .22); }
+    .tag-label { color: #828fca; font: 700 10px Consolas, monospace; letter-spacing: 1.3px; margin-right: 2px; }
+    .tag-button { color: #b6c3f4; background: rgba(27, 35, 80, .53); border: 1px solid rgba(73, 91, 157, .58); border-radius: 5px; padding: 7px 9px; font: 700 10px Consolas, monospace; letter-spacing: .35px; text-transform: uppercase; transition: .16s ease; }
+    .tag-button:hover { border-color: var(--cyan); color: #fff; }
+    .tag-button[aria-pressed="true"] { color: #051620; background: var(--cyan); border-color: #adfbff; box-shadow: 0 0 12px rgba(80,233,255,.2); }
+    .tag-button[data-tag="art"][aria-pressed="true"] { background: var(--pink); border-color: #ffc0e5; }
+    .tag-button[data-tag="design"][aria-pressed="true"] { background: var(--mint); border-color: #b2ffe4; }
+    .tag-summary { color: #8a97c9; font: 10px Consolas, monospace; margin-left: auto; white-space: nowrap; }
+
+    .catalog-head { display: flex; align-items: end; justify-content: space-between; gap: 15px; margin: 23px 2px 12px; }
+    .catalog-title { margin: 0; font: 900 clamp(22px, 3vw, 29px)/1 Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif; letter-spacing: 1.2px; text-transform: uppercase; }
+    .catalog-kicker { color: var(--pink); font: 700 10px Consolas, monospace; letter-spacing: 1.4px; margin-bottom: 6px; }
+    .results { color: #98a6d6; font: 700 11px Consolas, monospace; text-align: right; white-space: nowrap; }
+    .results strong { color: var(--gold); font-size: 14px; }
+    .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(224px, 1fr)); gap: 14px; align-items: stretch; }
+    .game-card {
+      min-width: 0; display: flex; flex-direction: column; position: relative; overflow: hidden;
+      background: linear-gradient(180deg, rgba(28, 37, 85, .97), rgba(10, 15, 37, .98));
+      border: 1px solid #344e9d; border-radius: 9px; box-shadow: inset 0 1px rgba(255,255,255,.06), 0 5px 13px rgba(0,0,0,.16);
+      transition: transform .17s ease, border-color .17s ease, box-shadow .17s ease, filter .17s ease;
+      outline: none;
+      animation: card-appear .28s both;
+    }
+    .game-card::before { content: ""; position: absolute; left: 9px; right: 9px; top: 0; height: 3px; z-index: 2; background: linear-gradient(90deg, var(--cyan), var(--purple), var(--pink)); opacity: .55; }
+    .game-card:hover, .game-card:focus-visible, .game-card.is-selected {
+      transform: translateY(-4px) scale(1.012); border-color: var(--gold);
+      box-shadow: 0 0 0 2px rgba(255,211,78,.25), 0 0 24px rgba(255,190,48,.2), 0 14px 25px rgba(0,0,0,.3);
+      filter: saturate(1.1);
+    }
+    .game-card.is-selected::after { content: "▶"; position: absolute; z-index: 4; top: 10px; left: 10px; padding: 5px 7px; color: #171229; background: var(--gold); border-radius: 4px; font-size: 10px; box-shadow: 0 0 12px rgba(255,211,78,.6); }
+    .game-card.featured { grid-column: span 2; display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(190px, .9fr); min-height: 235px; border: 2px solid #eac448; box-shadow: 0 0 0 2px rgba(255,211,78,.1), 0 0 27px rgba(255,190,48,.17); }
+    .game-card.featured::before { left: 0; right: 0; opacity: 1; height: 4px; background: linear-gradient(90deg, var(--gold), #ff8c39, var(--pink)); }
+    .thumb { height: 155px; position: relative; overflow: hidden; border-bottom: 1px solid rgba(102, 133, 229, .38); background: #202c63; }
+    .thumb img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform .35s cubic-bezier(.2,.8,.2,1), filter .25s ease; }
+    .thumb.image-thumb { height: auto; }
+    .thumb.image-thumb img { height: auto; object-fit: contain; }
+    .thumb.image-missing { background: linear-gradient(135deg, #141d4b, #3a2464 52%, #111932); }
+    .thumb.image-missing::after { content: "KURNIC / PROJECT ARCHIVE"; position:absolute; inset:0; display:grid; place-items:center; color:rgba(212,226,255,.6); font:900 13px Consolas,monospace; letter-spacing:2px; background:repeating-linear-gradient(135deg, transparent 0 15px, rgba(255,255,255,.025) 15px 16px); }
+    .link-art { height:100%; min-height:155px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:7px; overflow:hidden; position:relative; background:radial-gradient(ellipse at 50% 20%, rgba(95,121,255,.34), transparent 50%), linear-gradient(145deg,#111a49,#1b1739 60%,#24133d); }
+    .link-art::before { content:""; position:absolute; inset:-20%; opacity:.24; background:linear-gradient(90deg, transparent 49%, rgba(126,156,255,.65) 50%, transparent 51%), linear-gradient(0deg, transparent 49%, rgba(126,156,255,.65) 50%, transparent 51%); background-size:27px 27px; transform:perspective(180px) rotateX(28deg) scale(1.3); }
+    .link-art-icon { z-index:1; display:grid; place-items:center; width:62px; height:62px; color:var(--cyan); border:2px solid var(--cyan); border-radius:15px; font:900 43px/1 Impact,sans-serif; text-shadow:0 0 15px rgba(80,233,255,.65); box-shadow:0 0 0 5px rgba(80,233,255,.08), 0 0 22px rgba(80,233,255,.14), inset 0 0 20px rgba(80,233,255,.1); transform:rotate(-5deg); }
+    .link-art-title { z-index:1; color:#f5f6ff; font:900 16px/1 Impact,sans-serif; letter-spacing:1px; text-shadow:2px 2px 0 #283a7a; text-align:center; }
+    .link-art-sub { z-index:1; color:#9ba9e0; font:700 9px Consolas,monospace; letter-spacing:1.5px; }
+    .github-art .link-art-icon { color:#fff; border-color:#dbe5ff; }
+    .itch-art { background:radial-gradient(ellipse at 50% 20%,rgba(255,91,151,.28),transparent 55%),linear-gradient(145deg,#341b58,#1d1846 60%,#171932); }
+    .itch-art .link-art-icon { color:#ff82b8; border-color:#ff82b8; }
+    .archive-art { background:radial-gradient(ellipse at 50% 20%,rgba(255,211,78,.23),transparent 55%),linear-gradient(145deg,#2e2b5d,#1d1846 60%,#171932); }
+    .archive-art .link-art-icon { color:var(--gold); border-color:var(--gold); }
+    .game-card:hover .thumb img, .game-card:focus-visible .thumb img { transform: scale(1.06); filter: saturate(1.16) contrast(1.05); }
+    .card-type { display: inline-flex; align-self: flex-start; margin-bottom: 9px; padding: 5px 7px; border-radius: 4px; color: #eef4ff; background: rgba(8, 12, 34, .82); border: 1px solid rgba(197, 214, 255, .28); font: 700 9px Consolas, monospace; letter-spacing: .6px; text-transform: uppercase; }
+    .featured .thumb { height: 100%; min-height: 235px; border-bottom: 0; border-right: 1px solid rgba(102, 133, 229, .38); }
+    .featured .thumb.image-thumb { height: auto; min-height: 0; }
+    .featured .card-type { background: var(--gold); color: #17142b; border-color: #fff0a3; }
+    .card-copy { padding: 12px 13px 13px; display: flex; flex-direction: column; flex: 1; min-height: 122px; }
+    .card-title { margin: 0; color: #f6f7ff; font: 800 18px/1.2 "Trebuchet MS", Arial, sans-serif; letter-spacing: .1px; }
+    .card-date { color: #a5b4e8; font: 10px Consolas, monospace; margin-top: 5px; }
+    .card-description { color: #b5bee1; font-size: 11px; line-height: 1.5; margin: 9px 0 0; }
+    .card-bottom { margin-top: auto; padding-top: 12px; display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 7px; }
+    .card-tags { display: flex; flex-wrap: wrap; gap: 5px; min-width: 0; }
+    .mini-tag { background: rgba(30, 42, 94, .85); border: 1px solid rgba(90, 111, 194, .28); color: #7edbff; border-radius: 4px; padding: 4px 5px; font: 700 9px Consolas, monospace; text-transform: uppercase; letter-spacing: .2px; }
+    .mini-tag.art { color: #ff95d2; }
+    .mini-tag.design { color: #75f7cc; }
+    .mini-tag.design { color: #75f775; }
+    .mini-tag.made-with-ai { color: #b766fa; }
+    .open-cue { margin-left: auto; color: var(--gold); font: 900 10px Consolas, monospace; letter-spacing: .5px; white-space: nowrap; }
+    .featured .card-copy { padding: 17px 18px; min-height: 0; justify-content: center; }
+    .featured .card-title { font-size: clamp(23px, 2.6vw, 32px); line-height: 1.2; }
+    .featured .card-description { font-size: 12px; line-height: 1.65; margin-top: 10px; }
+    .featured .open-cue { display: inline-flex; gap: 7px; align-items: center; background: linear-gradient(180deg, #fff17a, #ffb52d); color: #17132a; border-radius: 5px; padding: 10px 12px; box-shadow: 0 3px 0 #a96720; }
+
+    .map-thumb { min-height: 200px; overflow: hidden; position: relative; background: linear-gradient(180deg, #62d5ed 0%, #aceafa 46%, #8cd9a6 47%, #287c72 100%); }
+    .map-sun { position:absolute; width:54px; height:54px; border-radius:50%; background:#fff1a4; top:21px; right:28px; box-shadow:0 0 25px rgba(255,245,170,.8); }
+    .map-cloud { position:absolute; width:86px; height:21px; border-radius:22px; background:#fff; opacity:.85; top:42px; left:18%; filter:drop-shadow(3px 3px 0 #b6e9f8); }
+    .map-cloud::before,.map-cloud::after { content:"";position:absolute;background:#fff;border-radius:50%; }
+    .map-cloud::before { width:31px;height:31px;left:13px;top:-14px; }
+    .map-cloud::after { width:25px;height:25px;left:37px;top:-8px; }
+    .map-hill { position:absolute; bottom:38px; width:120%; height:95px; left:-10%; background:#378d64; clip-path:polygon(0 100%,0 62%,19% 22%,32% 66%,51% 4%,68% 57%,81% 23%,100% 70%,100% 100%); }
+    .map-road { position:absolute; background:#f0d6a1; border:4px solid #9c7d67; box-shadow:inset 0 0 0 2px rgba(255,255,255,.32); }
+    .map-road.road-a { width:135%; height:54px; bottom:18px; left:-18%; transform:rotate(-12deg); }
+    .map-road.road-b { width:52px; height:135%; top:-15%; left:52%; transform:rotate(22deg); }
+    .map-road::after { content:""; position:absolute; inset:50% 0 auto; border-top:2px dashed rgba(255,255,255,.75); }
+    .map-house { position:absolute; bottom:72px; width:40px; height:32px; background:#fef1c5; border:2px solid #a75f55; box-shadow:4px 4px 0 rgba(0,0,0,.12); }
+    .map-house::before { content:""; position:absolute; left:-5px; right:-5px; top:-13px; height:17px; background:#ef665a; clip-path:polygon(50% 0,100% 100%,0 100%); }
+    .map-house::after { content:""; position:absolute; width:8px; height:12px; bottom:0; left:15px; background:#6d9fbd; }
+    .map-house.h1 { left:12%; transform:scale(.8); }
+    .map-house.h2 { right:14%; bottom:90px; transform:scale(1.1); }
+    .map-house.h3 { left:35%; bottom:82px; transform:scale(.7); }
+    .map-sign { position:absolute; left:50%; top:35%; transform:translate(-50%,-50%) rotate(-2deg); z-index:2; padding:9px 16px; background:#fff7d7; color:#17264c; border:3px solid #303b62; box-shadow:4px 5px 0 rgba(0,0,0,.28); font:900 clamp(18px,2.2vw,26px)/1 Impact, sans-serif; letter-spacing:1px; white-space:nowrap; }
+    .map-pin { position:absolute; z-index:3; left:calc(50% - 9px); top:16%; width:18px; height:18px; background:var(--pink); border:3px solid white; border-radius:50% 50% 50% 0; transform:rotate(-45deg); box-shadow:0 0 0 4px rgba(255,90,183,.25); }
+    .map-pin::after { content:""; position:absolute; width:4px; height:4px; top:4px; left:4px; background:#fff; border-radius:50%; }
+    .map-hud { position:absolute; inset:auto 0 0; z-index:4; display:flex; justify-content:space-between; padding:7px 10px; color:#fff; background:linear-gradient(90deg,rgba(8,15,38,.9),rgba(8,15,38,.2)); font:700 9px Consolas, monospace; letter-spacing:1px; }
+
+    .empty-state { display: none; text-align: center; border: 1px dashed #4a5ca5; border-radius: 10px; padding: 44px 20px; margin: 10px 0; background: rgba(20,25,58,.5); }
+    .empty-state.visible { display: block; }
+    .empty-state h3 { margin: 0 0 8px; font: 900 23px Impact, sans-serif; letter-spacing: 1px; }
+    .empty-state p { color: var(--muted); font-size: 12px; margin: 0 0 17px; }
+    .reset-button { padding: 9px 13px; border: 1px solid var(--cyan); background: rgba(80,233,255,.08); color: var(--cyan); border-radius: 6px; font-size: 11px; font-weight: 800; }
+    .bottom-bar { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 13px; margin-top: 30px; padding: 14px 0 20px; border-top: 1px solid rgba(103, 132, 224, .53); color: #8895c8; font: 700 10px Consolas, monospace; letter-spacing: .7px; }
+    .controls-legend { display: flex; flex-wrap: wrap; gap: 14px; }
+    .legend-item { display: inline-flex; align-items: center; gap: 6px; }
+    .keycap { display: inline-grid; place-items: center; min-width: 22px; height: 22px; padding: 0 5px; border-radius: 50%; color: #1b1a37; background: linear-gradient(180deg, #d7e7ff, #8098d1); box-shadow: 0 2px 0 #435583; font: 900 11px Arial; }
+    .footer-center { color: #8d9ddd; }
+    .footer-credit { color: #6675ad; }
+    .sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+
+    /* A brief console-start sequence; all content remains accessible if motion is reduced. */
+    .boot-screen { display:none; }
+    .js .boot-screen { display:flex; position:fixed; inset:0; z-index:100; background:#050610; align-items:center; justify-content:center; flex-direction:column; gap:16px; transition:opacity .35s ease, visibility .35s ease; }
+    .boot-screen.done { opacity:0; visibility:hidden; pointer-events:none; }
+    .boot-logo { width:75px;height:75px;display:grid;place-items:center;clip-path:polygon(15% 0,100% 0,85% 100%,0 100%);background:linear-gradient(140deg,#fff17a,#ff9a20 68%,#ff5a97);color:#17142a;font:900 52px Impact,sans-serif;filter:drop-shadow(0 0 26px rgba(255,195,55,.35));animation:logo-pop .48s cubic-bezier(.2,1.5,.4,1) both; }
+    .boot-name { color:#fff4b5; font:900 23px Impact,sans-serif; letter-spacing:4px; }
+    .boot-message { color:#8190cf; font:700 10px Consolas,monospace; letter-spacing:2px; }
+    .boot-progress { height:4px;width:190px;background:#1c244f;border-radius:5px;overflow:hidden; }
+    .boot-progress span { display:block;height:100%;width:100%;background:linear-gradient(90deg,var(--gold),var(--pink),var(--cyan));transform:scaleX(0);transform-origin:left;animation:load-bar .48s .08s ease-out forwards; }
+    @keyframes load-bar { to { transform:scaleX(1); } }
+    @keyframes logo-pop { from { opacity:0; transform:scale(.65) rotate(-9deg); } to { opacity:1; transform:scale(1) rotate(0); } }
+    @keyframes card-appear { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+    @media (min-width: 1280px) { .cards { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
+    @media (max-width: 900px) {
+      .shell { width: min(100% - 24px, 720px); }
+      .topbar { height: 68px; }
+      .online { display:none; }
+      .cards { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 11px; }
+      .game-card.featured { grid-column: span 2; }
+      .thumb { height: 135px; }
+      .card-title { font-size: 17px; }
+    }
+    @media (max-width: 620px) {
+      .shell { width: calc(100% - 20px); }
+      .topbar { height: 61px; gap: 8px; }
+      .brand { gap: 8px; }
+      .brand-mark { min-width: 130px; height: 34px; padding: 0 18px; font-size: 22px; }
+      .brand-title { font-size: 22px; }
+      .brand-subtitle { font-size: 8px; letter-spacing: 1px; }
+      .header-link { width: 36px; justify-content: center; padding: 7px; font-size: 0; }
+      .header-link svg { min-width: 17px; }
+      .sound-button { min-height: 34px; padding: 7px 8px; font-size: 10px; }
+      .hero { padding: 23px 0 13px; }
+      .hero-title { padding: 7px 25px 9px; font-size: 31px; }
+      .hero-subtitle { max-width: 330px; font-size: 12px; line-height: 1.5; }
+      .system-stats { gap: 8px; font-size: 9px; }
+      .control-panel { padding: 9px; }
+      .control-top { align-items: stretch; }
+      .type-filters { display:grid; grid-template-columns: repeat(4, 1fr); width:100%; gap:5px; }
+      .filter-button { min-height: 35px; padding: 7px 4px; font-size: 11px; }
+      .search-wrap { flex: 1 1 100%; }
+      .tag-area { gap: 6px; margin-top: 9px; padding-top: 9px; }
+      .tag-label { width:100%; margin-bottom: 1px; }
+      .tag-button { font-size: 9px; padding: 7px; }
+      .tag-summary { display:none; }
+      .catalog-head { margin-top: 20px; }
+      .catalog-kicker { font-size: 9px; }
+      .catalog-title { font-size: 24px; }
+      .results { font-size: 9px; }
+      .results strong { font-size: 12px; }
+      .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; }
+      .game-card.featured { grid-column: span 2; grid-template-columns: 1fr; }
+      .featured .thumb { min-height: 178px; height: 178px; border-right: 0; border-bottom: 1px solid rgba(102,133,229,.38); }
+      .featured .card-copy { padding: 13px; }
+      .featured .card-title { font-size: 25px; }
+      .featured .card-description { font-size: 11px; }
+      .thumb { height: 104px; }
+      .card-copy { padding: 9px; min-height: 133px; }
+      .card-title { font-size: 15px; }
+      .card-date { font-size: 9px; }
+      .card-description { font-size: 10px; line-height: 1.4; margin-top: 7px; }
+      .card-bottom { padding-top: 10px; }
+      .mini-tag { padding: 3px 4px; font-size: 8px; }
+      .open-cue { font-size: 9px; }
+      .card-type { padding: 4px 5px; font-size: 8px; }
+      .game-card.is-selected::after { left: 6px; top: 7px; }
+      .bottom-bar { margin-top: 22px; gap: 10px; }
+      .footer-center { order: 3; width: 100%; }
+      .controls-legend { gap: 8px; }
+      .legend-item { gap: 4px; }
+      .keycap { min-width: 19px; height: 19px; font-size: 10px; }
+    }
+    @media (max-width: 370px) {
+      .cards { grid-template-columns: 1fr; }
+      .game-card.featured { grid-column: span 1; }
+      .thumb { height: 160px; }
+      .featured .thumb { height: 165px; min-height: 165px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior:auto !important; animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important; }
+      .js .boot-screen { display:none; }
+    }
+  </style>
 </head>
 <body>
-<h2 class=title>Website WIP.</h2>
-</br>
-<a href=https://kurnic.github.io/indexOld.html title="Old website">Old website (not maintained or working properly)</a>
-</br>
-<footer>
-<p class=credits> This website uses an adapted version of: &copy;2013 Brushed. <a href=http://themes.alessioatzeni.com/html/brushed/ title="Brushed | Responsive One Page Template">Brushed Template</a> by <a href=http://www.alessioatzeni.com/ title="Alessio Atzeni | Web Designer &amp; Front-end Developer">Alessio Atzeni</a>
-</br> And uses fonts from: <a href=http://somepx.itch.io/somepxfont title="Somepx's fonts">Somepx</a>
-</br> For rest of the website:
-</br> © 2026 Albert.
-</br> Code licensed under MIT.
-</br> Content and images may not be reused without permission. </p>
-</footer>
-<a id=back-to-top href=#>
-<i class=font-icon-arrow-simple-up></i>
-</a>
-<script src=http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js></script>
-<script src=include/js/bootstrap.min.js></script>
-<script src=include/js/supersized.3.2.7.min.js></script>
-<script src=include/js/waypoints.js></script>
-<script src=include/js/waypoints-sticky.js></script>
-<script src=include/js/jquery.isotope.js></script>
-<script src=include/js/jquery.fancybox.pack.js></script>
-<script src=include/js/jquery.fancybox-media.js></script>
-<script src=include/js/jquery.tweet.js></script>
-<script src=include/js/plugins.js></script>
-<script src=include/js/main.js></script>
+  <div class="boot-screen" id="bootScreen" aria-hidden="true">
+    <div class="boot-logo">K</div>
+    <div class="boot-name">KURNIC</div>
+    <div class="boot-message">STARTING PLAYER SELECT...</div>
+    <div class="boot-progress"><span></span></div>
+  </div>
+
+  <div class="shell">
+    <header class="topbar">
+      <a class="brand" href="#top" aria-label="Kurnic home">
+        <span class="brand-mark" aria-hidden="true">KURNIC</span>
+        <span>
+          <!-- <span class="brand-title">Personal archive</span> -->
+          <span class="brand-subtitle" style="display:block">Personal archive</span>
+        </span>
+      </a>
+      <div class="header-actions">
+        <button id="soundToggle" class="sound-button" type="button" aria-pressed="false" title="Toggle optional interface sounds">♪ SOUND: OFF</button>
+        <span class="online"><span class="online-dot"></span> SYSTEM ONLINE</span>
+      </div>
+    </header>
+
+    <main id="top">
+      <section class="hero" aria-labelledby="mainTitle">
+        <div class="eyebrow">KURNIC ARCADE SYSTEM / 001</div>
+        <h1 id="mainTitle" class="hero-title">Select Your Game</h1>
+    
+        <div class="system-stats" aria-label="Collection details">
+          <span>Games, projects, experiments and other stuff archived for easy sharing.</span>
+        </div>
+      </section>
+
+      <section class="control-panel" aria-label="Filter collection">
+        <div class="control-top">
+          <div class="type-filters" role="group" aria-label="Filter by entry type" id="typeFilters">
+            <button class="filter-button" type="button" data-type="all" aria-pressed="true">All</button>
+            <button class="filter-button" type="button" data-type="game" aria-pressed="false">Games</button>
+            <button class="filter-button" type="button" data-type="project" aria-pressed="false">Projects</button>
+            <button class="filter-button" type="button" data-type="experiment" aria-pressed="false">Experiments</button>
+            <button class="filter-button" type="button" data-type="link" aria-pressed="false">Links</button>
+          </div>
+          <label class="search-wrap">
+            <span class="sr-only">Search entries</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 5 5"/></svg>
+            <input class="search" id="searchInput" type="search" placeholder="Search games, tags, links..." autocomplete="off">
+          </label>
+        </div>
+        <div class="tag-area" id="tagFilters" role="group" aria-label="Filter by tags">
+          <span class="tag-label">FILTER BY TAG</span>
+          <button class="tag-button" type="button" data-tag="programming" aria-pressed="false">Programming</button>
+          <button class="tag-button" type="button" data-tag="art" aria-pressed="false">Art</button>
+          <button class="tag-button" type="button" data-tag="design" aria-pressed="false">Design</button>
+          <button class="tag-button" type="button" data-tag="research" aria-pressed="false">Research</button>
+          <button class="tag-button" type="button" data-tag="physical" aria-pressed="false">Physical</button>
+          <button class="tag-button" type="button" data-tag="made-with-ai" aria-pressed="false">Made with AI</button>
+          <span class="tag-summary" id="tagSummary">0 TAGS SELECTED</span>
+        </div>
+      </section>
+
+      <section aria-labelledby="catalogTitle">
+        <div class="catalog-head">
+          <div></div>
+          <div class="results" id="resultsCount" aria-live="polite"><strong>—</strong> ENTRIES FOUND</div>
+        </div>
+        <div class="cards" id="cardsGrid" aria-label="Projects and links"></div>
+        <div class="empty-state" id="emptyState">
+          <h3>NO MATCH FOUND</h3>
+          <p>Nothing in the archive matches that combination. Try another tag or reset the filters.</p>
+          <button class="reset-button" id="resetButton" type="button">RESET FILTERS</button>
+        </div>
+      </section>
+    </main>
+
+    <footer class="bottom-bar">
+      <div class="controls-legend" aria-label="Keyboard controls">
+        <span class="legend-item"><span class="keycap">↑</span><span class="keycap">↓</span> MOVE</span>
+        <span class="legend-item"><span class="keycap">↵</span> SELECT</span>
+        <span class="legend-item"><span class="keycap">ESC</span> CLEAR SEARCH</span>
+      </div>
+      <div class="footer-center">KURNIC / PERSONAL ARCHIVE</div>
+      <div class="footer-credit">Last update october 2026.</div>
+    </footer>
+  </div>
+
+  <script>
+    const entries = [
+      {
+        id: 'personal-archive', title: 'Kurnic Personal Archive', year: 'Oct 2026', type: 'project',
+        description: 'A street-guessing game. Test how well you know the streets of Abrera with quick rounds and a daily challenge.',
+        url: 'https://kurnic.github.io/', image: 'include\\img\\personalarchive.jpg', tags: ['programming','design', 'made-with-ai'], cue: 'OPEN'
+      },
+      {
+        id: 'carrers-abrera', title: '¿Conoces Abrera?', year: 'Aug 2026', type: 'game',
+        description: 'A street-guessing game. Test how well you know the streets of Abrera with quick rounds and a daily challenge.',
+        url: 'https://carrersabrera.github.io/', image: 'include\\img\\carrersabrera.jpg', tags: ['design', 'made-with-ai'], cue: 'PLAY NOW'
+      },
+      {
+        id: 'super-red-rope-hanging', title: 'Super Red Rope Hanging', year: '2022', type: 'game',
+        description: 'An arcade game built to test raylib web compiling.',
+        url: 'https://github.com/kurnic/SuperRedRopeHanging', image: 'include\\img\\superredropehanging.jpg', tags: ['programming','design','game-jam'], cue: 'PLAY NOW'
+      },
+      {
+        id: 'five-cubes-escape-room', title: '“1961 – La llamada” (Five Cubes Escape Room)', year: '2020', type: 'project',
+        description: 'Physical Escape Room experience in Barcelona designed and developed from scratch.',
+        url: 'https://kurnic.wordpress.com/portfolio/2017-t-shirt-designs/', image: 'include\\img\\fivecubeslocal.jpg', tags: ['programming','art','design','physical'], cue: 'MORE INFO'
+      },
+      {
+        id: 'five-cubes-online-room', title: '“2020 – La investigación” (Online escape room from Five Cubes)', year: '2020', type: 'project',
+        description: 'Online escape room from Five Cubes to promote our physical one.',
+        url: 'https://kurnic.wordpress.com/portfolio/2020-la-investigacion-online-escape-room-from-five-cubes/', image: 'include\\img\\fivecubesescapeonline.jpg', tags: ['programming','art','design'], cue: 'MORE INFO'
+      },
+      {
+        id: 'five-cubes-website', title: 'Five Cubes Website', year: '2020', type: 'project',
+        description: 'Escape Room company website (including bookings) using WordPress + Divi + Woocomerce + Bookly Pro.',
+        url: 'https://kurnic.wordpress.com/portfolio/five-cubes-website/', image: 'include\\img\\fivecubesweb.jpg', tags: ['programming','design'], cue: 'MORE INFO'
+      },
+      {
+        id: 'five-cubes-brand', title: 'Five Cubes Brand', year: '2019', type: 'project',
+        description: 'Brand and company for creating Escape Rooms.',
+        url: 'https://kurnic.wordpress.com/portfolio/five-cubes-brand/', image: 'include\\img\\fivecubesbrand.jpg', tags: ['design'], cue: 'MORE INFO'
+      },
+      {
+        id: 'tshirt-designs-2017', title: '2017 T-shirt Designs', year: '2017', type: 'project',
+        description: 'A collection of T-shirt designs, including tributes to games and anime.',
+        url: 'https://kurnic.wordpress.com/portfolio/2017-t-shirt-designs/', image: 'include\\img\\2017tshirts.jpg', tags: ['art','design'], cue: 'MORE INFO'
+      },
+      {
+        id: 'arms-64', title: 'ARMS 64 (Jam version)', year: 'Aug 2017', type: 'game',
+        description: 'A local multiplayer boxing game with elastic punches, made for LOWREZJAM 2017.',
+        url: 'https://kurnic.itch.io/arms-64', image: 'include\\img\\arms64jam.jpg', tags: ['programming','design','art', 'game-jam'], cue: 'PLAY NOW'
+      },
+      {
+        id: 'apes-n-spells', title: 'Apes ’n’ Spells', year: 'Apr 2017', type: 'experiment',
+        description: 'A playable demo about a wizard trapped in an alternate dimension full of dangerous creatures.',
+        url: 'https://kurnic.wordpress.com/portfolio/apes-n-spells-demo/', image: 'include\\img\\apesnspells.jpg', tags: ['programming','design','art'], cue: 'MORE INFO'
+      },
+      {
+        id: 'voxel-tanks', title: 'Voxel Tanks: Security Breach', year: 'Jun 2016', type: 'game',
+        description: 'A 3D action-puzzle game where you control a virus tank and infiltrate a secret system.',
+        url: 'https://kurnic.wordpress.com/portfolio/voxel-tanks-security-breach/', image: 'include\\img\\voxeltanks.jpg', tags: ['programming','design','web'], cue: 'PLAY NOW'
+      },
+      {
+        id: 'super-toaster-shooter', title: 'Super Toaster Shooter', year: 'Oct 2015', type: 'game',
+        description: 'A tiny browser shooter built during a game jam, with a toaster that fires toast at enemies.',
+        url: 'https://kurnic.wordpress.com/portfolio/super-toaster-shooter/', image: 'include\\img\\supertoastershooter.jpg', tags: ['programming','design','web','game-jam'], cue: 'PLAY NOW'
+      },
+      {
+        id: 'snake-advance', title: 'Snake Advance', year: 'Oct 2015', type: 'experiment',
+        description: 'A compact Snake-inspired game with a Game Boy Advance-style presentation.',
+        url: 'https://kurnic.wordpress.com/portfolio/snake-advance/', image: 'include\\img\\snakeadvance.jpg', tags: ['programming','design'], cue: 'DOWNLOAD ROM'
+      },
+      {
+        id: 'super-red-rope-puzzles', title: 'Super Red Rope Puzzles', year: 'Sep 2015', type: 'game',
+        description: 'A puzzle game built around red ropes and small spatial challenges.',
+        url: 'https://kurnic.wordpress.com/portfolio/super-red-rope-puzzles/', image: 'include\\img\\superredropepuzzles.jpg', tags: ['programming','design','puzzle'], cue: 'DOWNLOAD GAME'
+      },
+      {
+        id: 'onevione-noob', title: 'Onevione Noob!', year: 'Sep 2015', type: 'experiment',
+        description: 'A print-and-play card game prototype.',
+        url: 'https://kurnic.wordpress.com/portfolio/onevione-noob/', image: 'include\\img\\onevione.jpg', tags: ['design','art','design','physical'], cue: 'MORE INFO'
+      },
+      {
+        id: 'minion-kinton', title: 'Minion Kinton T-shirt Design', year: 'Jul 2015', type: 'project',
+        description: 'A hand-drawn mash-up of a Minion and the Kinton cloud.',
+        url: 'https://kurnic.wordpress.com/portfolio/minion-kinton-t-shirt-design/', image: 'include\\img\\minionshirt2.jpg', tags: ['art','design'], cue: 'MORE INFO'
+      },
+      {
+        id: 'bachelor-thesis', title: 'Bachelor’s Thesis', year: 'Jul 2015', type: 'project',
+        description: 'Procedural generation applied to video-game level design.',
+        url: 'https://kurnic.wordpress.com/portfolio/procedural-generation-applied-to-a-video-game-level-design/', image: 'include\\img\\bachelorthesis.jpg', tags: ['programming','design','research'], cue: 'MORE INFO'
+      },
+      {
+        id: 'albuquerque-4000', title: 'Albuquerque 4000', year: 'Mar 2015', type: 'game',
+        description: 'A futuristic runner where a robot changes colours to survive the road ahead.',
+        url: 'https://kurnic.wordpress.com/portfolio/albuquerque-4000/', image: 'include\\img\\albuquerque.jpg', tags: ['programming','design','game-jam'], cue: 'MORE INFO'
+      },
+      {
+        id: 'mr-penguin', title: 'Mr Penguin', year: 'Dec 2014', type: 'game',
+        description: 'A small 3D mobile game made with Pingutronics as a tribute to Mr. Crab.',
+        url: 'https://kurnic.wordpress.com/portfolio/mr-penguin/', image: 'include\\img\\mrpenguin.jpg', tags: ['programming','design'], cue: 'PLAY NOW'
+      },
+      {
+        id: 'vitruvian-minion', title: 'Vitruvian Minion T-shirt Design', year: 'Dec 2014', type: 'project',
+        description: 'A Despicable Me Minion illustrated in the style of Da Vinci’s Vitruvian Man.',
+        url: 'https://kurnic.wordpress.com/portfolio/vitruvian-minion-t-shirt-design/', image: 'include\\img\\minionshirt.jpg', tags: ['art','design'], cue: 'MORE INFO'
+      },
+      {
+        id: 'super-butchers', title: 'Super Butchers n Knives', year: 'Oct 2014', type: 'game',
+        description: 'A retro action-platformer tribute to Super Ghouls ’n Ghosts.',
+        url: 'https://kurnic.wordpress.com/portfolio/super-butchers-n-knives/', image: 'include\\img\\superbutchersnknives.jpg', tags: ['programming','design','art'], cue: 'DOWNLOAD GAME'
+      },
+      {
+        id: 'smash-shirt', title: 'Smash Bros T-shirt Design', year: 'Aug 2014', type: 'project',
+        description: 'A digital T-shirt design inspired by the Super Smash Bros. roster.',
+        url: 'https://kurnic.wordpress.com/portfolio/smash-bros-t-shirt-design/', image: 'include\\img\\smashshirt.jpg', tags: ['art','design'], cue: 'MORE INFO'
+      },
+      {
+        id: 'flappy-jetpack', title: 'Flappy Jetpack', year: '2013', type: 'experiment',
+        description: 'A quick flappy-style game, remade with new art and built in a couple of days.',
+        url: 'https://kurnic.wordpress.com/portfolio/flappy-jetpack/', image: 'include\\img\\flappyjetpack.jpg', tags: ['programming','design'], cue: 'DOWNLOAD GAME'
+      },
+      {
+        id: 'custom-shirts', title: 'Hand-painted T-shirts', year: '2012–2013', type: 'project',
+        description: 'Hand-painted custom T-shirts, including a few designs made just for fun.',
+        url: 'https://kurnic.wordpress.com/portfolio/custom-t-shirts-painted/', image: 'include\\img\\customshirts.jpg', tags: ['art','design','physical'], cue: 'MORE INFO'
+      },
+      {
+        id: 'pum-pum-pam', title: 'Pum Pum Pam!', year: '2013', type: 'game',
+        description: 'An early mobile game prototype with a playful arcade-style menu.',
+        url: 'https://kurnic.wordpress.com/portfolio/pum-pum-pam/', image: 'include\\img\\pumpumpam.jpg', tags: ['programming','design','tools'], cue: 'MORE INFO'
+      },
+      {
+        id: 'tales-camelot', title: 'Tales de Camelot', year: '2011', type: 'game',
+        description: 'An early RPG project with a classic top-down fantasy world.',
+        url: 'https://kurnic.wordpress.com/portfolio/tales-de-camelot-in-catalan/', image: 'include\\img\\talesdecamelot.jpg', tags: ['programming','design'], cue: 'MORE INFO'
+      },
+      {
+        id: 'high-school-thesis', title: 'High School Thesis', year: '2011', type: 'project',
+        description: 'A project about video games: history, technology and creation.',
+        url: 'https://kurnic.wordpress.com/portfolio/high-school-thesis-about-video-games/', image: 'include\\img\\TR.jpg', tags: ['research','physical'], cue: 'MORE INFO'
+      }
+    ];
+
+    const tagNames = {
+      programming: 'Programming',  art: 'Art', design: 'Design',
+      web: 'Web', 'game-jam': 'Game Jam', tools: 'Tools', 
+      research: 'Research', puzzle: 'Puzzle'
+    };
+    const grid = document.getElementById('cardsGrid');
+    const searchInput = document.getElementById('searchInput');
+    const resultsCount = document.getElementById('resultsCount');
+    const emptyState = document.getElementById('emptyState');
+    const tagSummary = document.getElementById('tagSummary');
+    let activeType = 'all';
+    let activeTags = new Set();
+    let selectedId = 'carrers-abrera';
+    let soundEnabled = false;
+    let audioContext = null;
+
+    function escapeHTML(value) {
+      return String(value ?? '').replace(/[&<>"']/g, character => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[character]));
+    }
+    function typeLabel(type) {
+      return type === 'game' ? 'GAME' : type === 'experiment' ? 'EXPERIMENT' : type === 'link' ? 'LINK' : 'PROJECT';
+    }
+    function tagClass(tag) { return tag.replace(/[^a-z0-9-]/g, ''); }
+
+    function customVisual(entry) {
+      if (entry.visual === 'map') {
+        return `<div class="thumb map-thumb" aria-label="Stylised map illustration for Abrera">
+          <span class="map-sun"></span><span class="map-cloud"></span><span class="map-hill"></span>
+          <span class="map-road road-a"></span><span class="map-road road-b"></span>
+          <span class="map-house h1"></span><span class="map-house h2"></span><span class="map-house h3"></span>
+          <span class="map-pin"></span><span class="map-sign">ABRERA</span>
+          <span class="map-hud"><span>MAP + QUIZ</span><span>DAILY CHALLENGE</span></span>
+        </div>`;
+      }
+      const icon = entry.visual === 'github' ? '⌘' : entry.visual === 'itch' ? '▰' : '▤';
+      const visualTitle = entry.visual === 'github' ? 'CODE & EXPERIMENTS' : entry.visual === 'itch' ? 'PLAY SOMETHING' : 'PROJECT ARCHIVE';
+      const style = entry.visual === 'github' ? 'link-art github-art' : entry.visual === 'itch' ? 'link-art itch-art' : 'link-art archive-art';
+      return `<div class="thumb ${style}"><span class="link-art-icon">${icon}</span><span class="link-art-title">${visualTitle}</span><span class="link-art-sub">KURNIC / PLAYER 1</span></div>`;
+    }
+
+    function cardMarkup(entry, index) {
+      const featured = entry.featured ? ' featured' : '';
+      const selected = entry.id === selectedId ? ' is-selected' : '';
+      const visual = entry.image
+        ? `<div class="thumb image-thumb"><img src="${escapeHTML(entry.image)}" alt="" loading="lazy" decoding="async" onerror="this.style.display='none';this.parentElement.classList.add('image-missing')"></div>`
+        : customVisual(entry);
+      const tags = entry.tags.map(tag => `<span class="mini-tag ${tagClass(tag)}">${escapeHTML(tagNames[tag] || tag)}</span>`).join('');
+      return `<a class="game-card${featured}${selected}" href="${escapeHTML(entry.url)}" target="_blank" rel="noopener noreferrer" data-id="${escapeHTML(entry.id)}" data-type="${escapeHTML(entry.type)}" aria-label="${escapeHTML(entry.title)} — ${escapeHTML(entry.cue || 'Open')}" style="animation-delay:${Math.min(index * 22, 240)}ms">
+        ${visual}
+        <div class="card-copy">
+          <span class="card-type">${typeLabel(entry.type)}</span>
+          <h3 class="card-title">${escapeHTML(entry.title)}</h3>
+          <div class="card-date">${escapeHTML(entry.year)}</div>
+          <p class="card-description">${escapeHTML(entry.description)}</p>
+          <div class="card-bottom"><div class="card-tags">${tags}</div><span class="open-cue">${escapeHTML(entry.cue || 'OPEN')} ↗</span></div>
+        </div>
+      </a>`;
+    }
+
+    function filteredEntries() {
+      const query = searchInput.value.trim().toLocaleLowerCase();
+      return entries.filter(entry => {
+        if (activeType !== 'all' && entry.type !== activeType) return false;
+        if (activeTags.size && ![...activeTags].every(tag => entry.tags.includes(tag))) return false;
+        if (query) {
+          const haystack = [entry.title, entry.year, entry.description, entry.type, ...(entry.tags || []).map(tag => tagNames[tag] || tag)].join(' ').toLocaleLowerCase();
+          if (!haystack.includes(query)) return false;
+        }
+        return true;
+      }).sort((a,b) => Number(!!b.featured) - Number(!!a.featured));
+    }
+
+    function render() {
+      const results = filteredEntries();
+      if (!results.some(entry => entry.id === selectedId)) selectedId = results[0]?.id || null;
+      grid.innerHTML = results.map(cardMarkup).join('');
+      resultsCount.innerHTML = `<strong>${results.length}</strong> / ${entries.length} ENTRIES`;
+      emptyState.classList.toggle('visible', results.length === 0);
+      grid.style.display = results.length ? 'grid' : 'none';
+      tagSummary.textContent = `${activeTags.size} TAG${activeTags.size === 1 ? '' : 'S'} SELECTED`;
+      grid.querySelectorAll('.game-card').forEach(card => {
+        card.addEventListener('mouseenter', () => setSelected(card.dataset.id, false));
+        card.addEventListener('focus', () => setSelected(card.dataset.id, false));
+        card.addEventListener('click', () => { setSelected(card.dataset.id, false); playBlip(620); });
+      });
+    }
+
+    function setSelected(id, repaint = true) {
+      if (!id) return;
+      selectedId = id;
+      grid.querySelectorAll('.game-card').forEach(card => card.classList.toggle('is-selected', card.dataset.id === id));
+      if (repaint) render();
+    }
+
+    document.getElementById('typeFilters').addEventListener('click', event => {
+      const button = event.target.closest('[data-type]');
+      if (!button) return;
+      activeType = button.dataset.type;
+      document.querySelectorAll('.filter-button').forEach(item => item.setAttribute('aria-pressed', String(item === button)));
+      playBlip(430); render();
+    });
+
+    document.getElementById('tagFilters').addEventListener('click', event => {
+      const button = event.target.closest('[data-tag]');
+      if (!button) return;
+      const tag = button.dataset.tag;
+      if (activeTags.has(tag)) activeTags.delete(tag); else activeTags.add(tag);
+      button.setAttribute('aria-pressed', String(activeTags.has(tag)));
+      playBlip(500); render();
+    });
+
+    searchInput.addEventListener('input', render);
+    function resetFilters() {
+      activeType = 'all'; activeTags.clear(); selectedId = 'carrers-abrera'; searchInput.value = '';
+      document.querySelectorAll('.filter-button').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.type === 'all')));
+      document.querySelectorAll('.tag-button').forEach(button => button.setAttribute('aria-pressed', 'false'));
+      render(); searchInput.focus();
+    }
+    document.getElementById('resetButton').addEventListener('click', resetFilters);
+
+    grid.addEventListener('keydown', event => {
+      const card = event.target.closest('.game-card');
+      if (!card || !['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(event.key)) return;
+      const cards = [...grid.querySelectorAll('.game-card')];
+      const current = cards.indexOf(card);
+      const style = getComputedStyle(grid);
+      const columns = Math.max(1, style.gridTemplateColumns.split(' ').length);
+      let next = current;
+      if (event.key === 'ArrowRight') next = Math.min(cards.length - 1, current + 1);
+      if (event.key === 'ArrowLeft') next = Math.max(0, current - 1);
+      if (event.key === 'ArrowDown') next = Math.min(cards.length - 1, current + columns);
+      if (event.key === 'ArrowUp') next = Math.max(0, current - columns);
+      if (next !== current) { event.preventDefault(); cards[next].focus(); cards[next].scrollIntoView({ block: 'nearest', behavior: 'smooth' }); setSelected(cards[next].dataset.id, false); }
+    });
+
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape') {
+        if (searchInput.value) { searchInput.value = ''; render(); }
+        else if (activeTags.size || activeType !== 'all') resetFilters();
+      }
+    });
+
+    function playBlip(frequency = 550) {
+      if (!soundEnabled) return;
+      try {
+        audioContext = audioContext || new (window.AudioContext || window.webkitAudioContext)();
+        if (audioContext.state === 'suspended') audioContext.resume();
+        const oscillator = audioContext.createOscillator();
+        const gain = audioContext.createGain();
+        oscillator.type = 'square';
+        oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
+        oscillator.frequency.exponentialRampToValueAtTime(Math.max(150, frequency * .72), audioContext.currentTime + .055);
+        gain.gain.setValueAtTime(.035, audioContext.currentTime);
+        gain.gain.exponentialRampToValueAtTime(.001, audioContext.currentTime + .065);
+        oscillator.connect(gain); gain.connect(audioContext.destination);
+        oscillator.start(); oscillator.stop(audioContext.currentTime + .07);
+      } catch (error) { /* Audio is optional; visual controls remain fully functional. */ }
+    }
+    document.getElementById('soundToggle').addEventListener('click', event => {
+      soundEnabled = !soundEnabled;
+      const button = event.currentTarget;
+      button.setAttribute('aria-pressed', String(soundEnabled));
+      button.textContent = soundEnabled ? '♪ SOUND: ON' : '♪ SOUND: OFF';
+      playBlip(700);
+    });
+
+    render();
+    const bootScreen = document.getElementById('bootScreen');
+    if (bootScreen && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      window.addEventListener('load', () => window.setTimeout(() => bootScreen.classList.add('done'), 1300), { once: true });
+      window.setTimeout(() => bootScreen.classList.add('done'), 2800);
+    }
+  </script>
 </body>
 </html>
