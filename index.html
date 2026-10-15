@@ -353,12 +353,11 @@
             <button class="filter-button" type="button" data-type="game" aria-pressed="false">Games</button>
             <button class="filter-button" type="button" data-type="project" aria-pressed="false">Projects</button>
             <button class="filter-button" type="button" data-type="experiment" aria-pressed="false">Experiments</button>
-            <button class="filter-button" type="button" data-type="link" aria-pressed="false">Links</button>
           </div>
           <label class="search-wrap">
             <span class="sr-only">Search entries</span>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 5 5"/></svg>
-            <input class="search" id="searchInput" type="search" placeholder="Search games, tags, links..." autocomplete="off">
+            <input class="search" id="searchInput" type="search" placeholder="Search names, descriptions, tags, ..." autocomplete="off">
           </label>
         </div>
         <div class="tag-area" id="tagFilters" role="group" aria-label="Filter by tags">
@@ -402,7 +401,7 @@
     const entries = [
       {
         id: 'personal-archive', title: 'Kurnic Personal Archive', year: 'Oct 2026', type: 'project',
-        description: 'A street-guessing game. Test how well you know the streets of Abrera with quick rounds and a daily challenge.',
+        description: 'The re.',
         url: 'https://kurnic.github.io/', image: 'include\\img\\personalarchive.jpg', tags: ['programming','design', 'made-with-ai'], cue: 'OPEN'
       },
       {
@@ -476,6 +475,11 @@
         url: 'https://kurnic.wordpress.com/portfolio/onevione-noob/', image: 'include\\img\\onevione.jpg', tags: ['design','art','design','physical'], cue: 'MORE INFO'
       },
       {
+        id: 'personal-website', title: 'Old Personal Website', year: 'Sep 2015', type: 'project',
+        description: 'The original design of this website.',
+        url: 'http://kurnic.github.io/indexOld', image: 'include\\img\\personalwebsite.jpg', tags: ['programming','design'], cue: 'OPEN'
+      },
+      {
         id: 'minion-kinton', title: 'Minion Kinton T-shirt Design', year: 'Jul 2015', type: 'project',
         description: 'A hand-drawn mash-up of a Minion and the Kinton cloud.',
         url: 'https://kurnic.wordpress.com/portfolio/minion-kinton-t-shirt-design/', image: 'include\\img\\minionshirt2.jpg', tags: ['art','design'], cue: 'MORE INFO'
@@ -509,6 +513,11 @@
         id: 'smash-shirt', title: 'Smash Bros T-shirt Design', year: 'Aug 2014', type: 'project',
         description: 'A digital T-shirt design inspired by the Super Smash Bros. roster.',
         url: 'https://kurnic.wordpress.com/portfolio/smash-bros-t-shirt-design/', image: 'include\\img\\smashshirt.jpg', tags: ['art','design'], cue: 'MORE INFO'
+      },
+      {
+        id: 'personal-blog', title: "Kurnic's Projects Blog", year: 'Aug 2014', type: 'project',
+        description: 'Old blog with personal posts about my projects and life.',
+        url: 'https://kurnic.wordpress.com/', image: 'include\\img\\personalblog.jpg', tags: [], cue: 'OPEN'
       },
       {
         id: 'flappy-jetpack', title: 'Flappy Jetpack', year: '2013', type: 'experiment',
