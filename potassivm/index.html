@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#c9c9c4">
+<title>POTASSIVM — Game Boy Chiptune Player</title>
+<style>
+  :root {
+    --shell: #c9c9c3;
+    --shell-light: #e1e1db;
+    --shell-mid: #c2c3bc;
+    --shell-shadow: #8f918b;
+    --bezel: #45444d;
+    --lcd: #a8b99a;
+    --ink: #253c32;
+    --deep-ink: #192e27;
+    --button-red: #913956;
+    --button-dark: #59223b;
+    --pixel: "Courier New", ui-monospace, monospace;
+  }
+  * { box-sizing: border-box; }
+  html { min-height: 100%; background: #202b29; }
+  body {
+    min-height: 100svh;
+    margin: 0;
+    padding: max(14px, env(safe-area-inset-top)) 12px max(20px, env(safe-area-inset-bottom));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow-x: hidden;
+    color: #e5e6dc;
+    font-family: var(--pixel);
+    background:
+      radial-gradient(ellipse at 50% 34%, rgba(117,145,118,.23), transparent 48%),
+      radial-gradient(circle at 15% 15%, rgba(255,255,255,.045) 0 1px, transparent 1.5px),
+      linear-gradient(145deg, #303c38, #1b2524 72%);
+    background-size: auto, 18px 18px, auto;
+  }
+  button { font: inherit; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+  button:focus-visible { outline: 2px dashed #fff5ce; outline-offset: 3px; }
+  .page { width: 100%; max-width: 470px; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+  .brandline {
+    width: min(82vw, 360px); display: flex; justify-content: space-between; align-items: center;
+    padding: 0 2px; color: #aab9a9; font-size: 9px; letter-spacing: .15em; text-transform: uppercase;
+  }
+  .brandline .online { display: inline-flex; align-items: center; gap: 7px; }
+  .brandline .online::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: #82967a; box-shadow: 0 0 10px #82967a66; }
+
+  /* Original DMG-01 silhouette: tall, narrow shell with the larger bottom-right radius. */
+  .device-wrap { position: relative; width: min(82vw, 360px); filter: drop-shadow(0 25px 24px rgba(0,0,0,.34)); isolation: isolate; }
+  .gameboy {
+    position: relative; z-index: 0; width: 100%; aspect-ratio: 90 / 148; overflow: visible;
+    border-radius: 16px 16px 40px 16px;
+    background: linear-gradient(112deg, #ecece6 0%, #dfe0db 12%, var(--shell) 26%, #c5c6bf 64%, #bfc0ba 100%);
+    box-shadow: inset 2px 2px 0 rgba(255,255,255,.82), inset -4px -4px 0 rgba(104,107,99,.26), inset 0 0 0 1px rgba(255,255,255,.12), 10px 12px 0 rgba(15,20,19,.12), 0 18px 30px rgba(0,0,0,.25);
+    transition: transform .16s ease, filter .2s ease;
+  }
+  .gameboy::before {
+    content: ""; position: absolute; inset: 5px 6px 7px 5px; border-radius: 12px 12px 34px 12px;
+    border: 1px solid rgba(255,255,255,.2); pointer-events: none;
+    box-shadow: inset -1px -1px 0 rgba(120,123,118,.15);
+  }
+  .gameboy::after {
+    content: ""; position: absolute; left: 10%; top: 4%; width: 80%; height: 2px;
+    border-radius: 999px; background: rgba(121,125,119,.32); box-shadow: 0 0 0 1px rgba(255,255,255,.18);
+    pointer-events: none;
+  }
+  .gameboy.is-playing { animation: body-buzz .12s infinite alternate; }
+  @keyframes body-buzz {
+    from { transform: translate3d(-1px, .4px, 0) rotate(-.18deg); }
+    to { transform: translate3d(1px, -.7px, 0) rotate(.18deg); }
+  }
+  .top-seam { display: none; }
+
+  /* Recessed purple-grey screen surround and near-square monochrome LCD aperture. */
+  .screen-bezel {
+    position: absolute; left: 7%; top: 6.5%; width: 86%; height: 36%;
+    border-radius: 7px 7px 8px 7px;
+    background: linear-gradient(135deg, #5f5a62 0%, #4b4850 44%, #3e3f46 100%);
+    box-shadow: inset 0 2px 4px rgba(0,0,0,.4), inset 0 0 0 1px rgba(255,255,255,.05), 0 1px 0 rgba(255,255,255,.22);
+  }
+  .screen-bezel::before {
+    content: ""; position: absolute; inset: 0; border-radius: inherit;
+    background: linear-gradient(90deg, rgba(255,255,255,.18) 0, transparent 19%, transparent 81%, rgba(0,0,0,.12) 100%);
+    pointer-events: none;
+  }
+  .lcd-frame {
+    position: absolute; left: 13%; top: 8%; width: 70%; height: 82%; padding: 4px;
+    border-radius: 2px; background: #171a19;
+    box-shadow: inset 0 0 0 1px #272b29, 0 0 0 1px rgba(0,0,0,.22);
+  }
+  .lcd {
+    position: relative; width: 100%; height: 100%; overflow: hidden; cursor: default;
+    background: var(--lcd); color: var(--ink); border: 1px solid #7e9274;
+    box-shadow: inset 0 0 12px rgba(40,58,37,.18);
+    font-size: clamp(6px, 1.7vw, 7.8px); line-height: 1.23; letter-spacing: .025em;
+    text-shadow: .25px 0 currentColor; image-rendering: pixelated;
+  }
+  .lcd::before { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none; opacity: .17; background: repeating-linear-gradient(to bottom, transparent 0, transparent 2px, rgba(26,53,39,.24) 3px); }
+  .lcd::after { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none; box-shadow: inset 0 0 14px rgba(16,35,22,.14); }
+  .screen-app { position: relative; z-index: 2; height: 100%; padding: 5px 6px 4px; display: flex; flex-direction: column; gap: 4px; }
+  .screen-top { display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(37,60,50,.55); padding-bottom: 3px; font-weight: 900; white-space: nowrap; }
+  .screen-top .led { display: inline-block; width: 5px; height: 5px; background: #355c43; margin-right: 4px; vertical-align: middle; }
+  .screen-top .led.live { animation: led-blink .7s steps(2, start) infinite; }
+  @keyframes led-blink { to { opacity: .12; } }
+  .screen-tabs { display: flex; gap: 3px; }
+  .screen-tab { padding: 1px 3px; border: 1px solid transparent; color: inherit; background: transparent; font: inherit; line-height: inherit; cursor: pointer; }
+  .screen-tabs .active { border-color: var(--ink); background: var(--ink); color: var(--lcd); }
+  .screen-tab:focus-visible { outline: 1px dotted var(--deep-ink); outline-offset: 1px; }
+  .song-view { display: flex; flex-direction: column; flex: 1; min-height: 0; gap: 4px; }
+  .now-playing { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 3px; align-items: end; }
+  .track-label { opacity: .8; font-size: .88em; }
+  .track-title { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-size: 1.23em; line-height: 1.15; font-weight: 900; letter-spacing: .015em; }
+  .track-number { font-size: .94em; align-self: center; padding: 2px 3px; border: 1px solid rgba(37,60,50,.55); }
+  .meta-line { display: flex; justify-content: space-between; align-items: center; gap: 3px; opacity: .9; font-size: .9em; margin-top: 1px; white-space: nowrap; }
+  .channels { border-top: 1px solid rgba(37,60,50,.4); border-bottom: 1px solid rgba(37,60,50,.4); padding: 4px 0; display: flex; flex-direction: column; gap: 3px; }
+  .channel-row { display: grid; grid-template-columns: 22px minmax(0,1fr) auto; align-items: center; gap: 4px; min-height: 10px; }
+  .channel-name { font-weight: 900; }
+  .steps { display: grid; grid-template-columns: repeat(16, minmax(1px,1fr)); gap: 1px; height: 7px; }
+  .step { height: 100%; background: rgba(37,60,50,.21); }
+  .step.on { background: var(--ink); }
+  .step.active { background: #d6e1ca; outline: 1px solid var(--ink); }
+  .channel-level { min-width: 16px; text-align: right; font-size: .78em; }
+  .waveform { display: flex; align-items: center; gap: 2px; height: 15px; overflow: hidden; opacity: .92; }
+  .waveform span { flex: 1; min-width: 2px; height: var(--h,30%); background: var(--ink); }
+  .lcd.playing .waveform span { animation: wave-pulse .35s ease-in-out infinite alternate; animation-delay: var(--d,0ms); }
+  @keyframes wave-pulse { from { height: 14%; } to { height: var(--h,90%); } }
+  .progress-wrap { display: flex; flex-direction: column; gap: 2px; margin-top: auto; }
+  .progress-top { display: flex; justify-content: space-between; gap: 4px; font-size: .86em; white-space: nowrap; }
+  .progress-track { height: 5px; border: 1px solid var(--ink); padding: 1px; }
+  .progress-fill { width: 0%; height: 100%; background: var(--ink); transition: width .12s linear; }
+  .screen-bottom { display: flex; align-items: center; justify-content: space-between; padding-top: 2px; gap: 3px; font-size: .8em; white-space: nowrap; }
+  .screen-bottom .hint { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+  .bandcamp-link { flex: 0 0 auto; min-height: 15px; border: 1px solid var(--ink); background: transparent; color: var(--ink); font-size: inherit; font-weight: 900; padding: 1px 4px; text-decoration: none; }
+  .bandcamp-link:active { background: var(--ink); color: var(--lcd); }
+  .list-view { display: none; min-height: 0; flex: 1; flex-direction: column; gap: 2px; }
+  .list-view.visible { display: flex; }
+  .list-heading { display: flex; justify-content: space-between; padding-bottom: 3px; border-bottom: 1px solid rgba(37,60,50,.55); font-weight: 900; }
+  .track-list { display: flex; min-height: 0; flex-direction: column; gap: 2px; }
+  .track-row { display: grid; grid-template-columns: minmax(0,1fr) auto; align-items: center; gap: 3px; }
+  .track-select { display: grid; grid-template-columns: 16px minmax(0,1fr) auto; gap: 4px; width: 100%; min-width: 0; border: 0; padding: 3px 2px; color: var(--ink); background: transparent; text-align: left; font: inherit; cursor: pointer; }
+  .track-row.current .track-select { color: var(--lcd); background: var(--ink); }
+  .track-select:focus-visible, .bandcamp-link:focus-visible { outline: 2px dotted var(--deep-ink); outline-offset: 1px; }
+  .list-screen-bottom { margin-top: auto; border-top: 1px solid rgba(37,60,50,.55); }
+  .bezel-brand {
+    position: absolute; left: 25%; top: 3%; width: 76%; color: #c5c5c8;
+    font: 700 clamp(3px, 1.2vw, 7px) Arial, sans-serif; letter-spacing: .055em;
+    text-align: center; white-space: nowrap; opacity: .96;
+  }
+  .bezel-brand::before, .bezel-brand::after {
+    content: ""; position: absolute; top: 50%; width: 35%; height: 7px;
+    background: linear-gradient(to bottom, #9b1e64 0 2px, transparent 2px 5px, #203581 5px 7px);
+    transform: translateY(-50%);
+  }
+  .bezel-brand::before { left: -30%; width: 50%;}
+  .bezel-brand::after { right: 5%; width: 13%;}
+  .bezel-brand span { color: #dfdfdc; font-size: 1em; letter-spacing: inherit; }
+
+  /* Printed wordmark belongs on the shell below the display; keep it horizontal. */
+  .logo-wordmark {
+    position: absolute; top: 45%; left: 9%; width: 82%; display: flex; align-items: baseline;
+    justify-content: flex-start; gap: 2px; white-space: nowrap; transform: none;
+    color: #181e6a; text-shadow: 0 1px 0 rgba(255,255,255,.5); font-family: Arial, sans-serif;
+    font-weight: 900; letter-spacing: -.055em;
+  }
+  .logo-wordmark .nintendo { margin-top: 7px; align-self: center; margin-right: 1px; font-size: clamp(12px, 2vw, 12px); letter-spacing: -.02em; }
+  .logo-wordmark .game { font-style: italic; font-size: clamp(17px, 5vw, 24px); letter-spacing: -.07em; }
+  .logo-wordmark .boy { font-style: italic; font-size: clamp(17px, 5.5vw, 24px); letter-spacing: -.08em; }
+  .logo-wordmark .tm { align-self: flex-start; margin-top: 19px; font-size: 9px; font-style: normal; letter-spacing: 0; }
+  .logo-sub, .control-caption { display: none; }
+
+  /* Physical controls use the shell itself as the single coordinate system. */
+  .controls { position: absolute; inset: 0; height: auto; left: 0; right: 0; top: 0; pointer-events: none; }
+  .controls button { pointer-events: auto; }
+  .dpad {
+    position: absolute; left: 9.5%; top: 58.5%; width: 27.5%; aspect-ratio: 1;
+    filter: drop-shadow(1px 2px 1px rgba(0,0,0,.2));
+  }
+  .dpad-base { display: none; }
+  .dpad-cross {
+    position: absolute; inset: 3%;
+    background: linear-gradient(135deg, #5a5d65 0%, #2e3138 40%, #2a2d34 58%, #3c3f46 100%);
+    border-radius: 14px; clip-path: polygon(34% 0,66% 0,66% 33%,100% 33%,100% 67%,66% 67%,66% 100%,34% 100%,34% 67%,0 67%,0 33%,34% 33%);
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,.06), inset 0 2px 1px rgba(255,255,255,.1);
+  }
+  .dpad-cross::before {
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background: linear-gradient(90deg, transparent 0 31%, rgba(255,255,255,.08) 33%, transparent 38% 62%, rgba(0,0,0,.18) 66%, transparent 70%);
+    clip-path: polygon(34% 0,66% 0,66% 33%,100% 33%,100% 67%,66% 67%,66% 100%,34% 100%,34% 67%,0 67%,0 33%,34% 33%);
+  }
+  .dpad-cross::after {
+    content: ""; position: absolute; left: 36%; top: 36%; width: 28%; height: 28%;
+    background: radial-gradient(circle at 35% 25%, #3a3d45, #23262d 85%); pointer-events: none; border-radius: 2px;
+  }
+  .dpad-button {
+    position: absolute; z-index: 2; display: flex; align-items: center; justify-content: center;
+    width: 32%; height: 32%; padding: 0; border: 0; border-radius: 2px;
+    color: transparent; background: transparent; font-size: 0; cursor: pointer;
+  }
+  .dpad-button:active { background: rgba(255,255,255,.13); }
+  .dpad-button.up { left: 34%; top: 1%; }
+  .dpad-button.down { left: 34%; bottom: 1%; }
+  .dpad-button.left { left: 1%; top: 34%; }
+  .dpad-button.right { right: 1%; top: 34%; }
+  .dpad-center { display: none; }
+
+  /* Distinct red A/B buttons, staggered diagonally like the physical DMG. */
+  .action-cluster {
+    position: absolute; right: 7%; top: 56.7%; width: 33%; height: 15.5%;
+    transform: rotate(-5deg); border-radius: 0; background: transparent; box-shadow: none;
+  }
+  .action-button {
+    position: absolute; width: 38%; aspect-ratio: 1; padding: 0; border: 0; border-radius: 50%;
+    background: linear-gradient(145deg, #b14a72 0%, #913956 47%, #65243f 100%);
+    box-shadow: inset 1px 1px 2px rgba(255,255,255,.22), inset -3px -3px 3px rgba(35,5,20,.22), 0 2px 2px rgba(57,26,39,.38), 0 1px 0 rgba(255,255,255,.18);
+    color: #eee4e8; font-weight: 900; font-size: clamp(12px, 3.4vw, 15px); cursor: pointer; transform: rotate(5deg);
+  }
+  .action-button:active { transform: rotate(5deg) translateY(2px); box-shadow: inset 2px 2px 3px rgba(0,0,0,.24); }
+  .action-button.b { left: 8%; top: 32%; }
+  .action-button.a { right: 3%; top: 0; }
+  .button-label {
+    position: absolute; color: #181e6a; font: 900 clamp(9px, 1.85vw, 9px) Arial, sans-serif;
+    transform: rotate(-24deg); pointer-events: none;
+  }
+  .button-label.b { left: 35%; bottom: -3%; }
+  .button-label.a { right: 10%; top: 55%; }
+
+  /* Start/Select sit lower and central, with pill keys and separate printed labels. */
+  .small-controls {
+    position: absolute; left: 34%; top: 76.5%; width: 32%; height: 9%;
+    display: flex; justify-content: center; align-items: flex-start; gap: 7%; ;
+  }
+  .small-button-wrap { width: 46%; min-width: 0; display: flex; flex-direction: column; align-items: center; gap: 3px; }
+  .small-button {
+    width: 100%; height: 9px; flex: 0 0 9px; padding: 0; border: 0; border-radius: 999px; transform: rotate(-25deg);
+    background: linear-gradient(#8a8d94, #4a4d53 78%); box-shadow: inset 0 1px rgba(255,255,255,.42), 0 1px 1px rgba(0,0,0,.26); cursor: pointer;
+  }
+  .small-button:active { transform: translateY(5px), rotate(-25deg); }
+  .small-label {
+    color: #181e6a; transform: rotate(-25deg); font: 900 clamp(9px, 1.35vw, 6.5px) Arial, sans-serif;
+    letter-spacing: .045em; white-space: nowrap;
+  }
+
+  /* Eight shallow diagonal speaker slots at the lower-right of the shell. */
+  .speaker {
+    position: absolute; right: 15%; top: 83%; width: 15%; height: 14.5%; padding: 0;
+    display: flex; flex-direction: column; justify-content: space-between; transform: rotate(68deg);
+  }
+  .speaker span {
+    width: 100%; height: 4px; flex: 0 0 4px; border-radius: 4px;
+    background: linear-gradient(#9c9d96, #e0e0d9 58%, #9a9b94);
+    box-shadow: inset 0 1px 1px rgba(55,57,52,.4), 0 1px rgba(255,255,255,.48);
+  }
+  .speaker::before { display: none; }
+  .now-playing-indicator {
+    position: absolute; left: 11%; top: 20%; width: 8px; height: 6px;
+    display: block; color: transparent; font-size: 0; letter-spacing: 0;
+  }
+  .now-playing-indicator::before {
+    content: ""; display: block; width: 5px; height: 5px; border-radius: 50%;
+    background: #c9444c; box-shadow: 0 0 0 1px rgba(20,20,20,.35);
+  }
+  .now-playing-indicator::after {
+    content: "BATTERY"; position: absolute; top: 7px; left: -3px; color: #c1c2c4;
+    font: 700 5px Arial, sans-serif; letter-spacing: .02em;
+  }
+  .is-playing .now-playing-indicator::before { background: #e95b5d; box-shadow: 0 0 4px rgba(233,91,93,.6); animation: led-blink .7s steps(2,start) infinite; }
+  .headphone-detail { display: none; }
+
+  .device-help {
+    width: min(82vw, 360px); display: flex; justify-content: space-between; align-items: center;
+    gap: 12px; color: #aab8a8; font-size: 9px; line-height: 1.5; letter-spacing: .04em;
+  }
+  .device-help .legend { display: flex; flex-wrap: wrap; gap: 5px 9px; }
+  .key { border: 1px solid #617069; padding: 1px 4px; color: #e2e7da; }
+  .device-help .audio-status { max-width: 47%; color: #d0d5c7; text-align: right; white-space: nowrap; overflow: visible; text-overflow: ellipsis; }
+  .page-footer { color: #778980; font-size: 10px; line-height: 1.5; letter-spacing: .08em; text-align: center; }
+  .page-footer a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
+  .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+
+  @media (max-width: 360px) {
+    .device-wrap, .brandline, .device-help { width: min(82vw, 360px); }
+    .small-label { letter-spacing: 0; }
+    .speaker span { height: 3px; flex-basis: 3px; }
+    .screen-app { padding: 3px 4px 2px; gap: 2px; }
+    .song-view { gap: 2px; }
+    .channel-row { grid-template-columns: 20px minmax(0,1fr) auto; gap: 3px; min-height: 8px; }
+    .channels { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); align-items: center; padding: 2px 0; gap: 1px 4px; }
+    .steps { height: 5px; }
+    .waveform { display: none; }
+    .progress-wrap { gap: 1px; }
+    .progress-track { height: 4px; }
+    .screen-bottom { gap: 2px; }
+  }
+  @media (max-width: 320px) {
+    .meta-line { display: none; }
+  }
+  @media (max-width: 260px) {
+    .screen-app, .song-view { gap: 1px; }
+    .screen-top { padding-bottom: 1px; }
+    .channel-row { min-height: 7px; }
+    .channels { padding: 0; }
+    .steps { height: 4px; }
+    .progress-track { height: 3px; }
+    .screen-bottom { padding-top: 0; }
+  }
+  @media (max-height: 700px) and (min-width: 420px) {
+    body { align-items: flex-start; }
+    .page { max-width: 340px; gap: 7px; }
+    .device-wrap { width: min(66vw, 300px); }
+    .brandline, .device-help { width: min(66vw, 300px); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+  }
+</style>
+</head>
+<body>
+  <main class="page">
+
+    <div class="device-wrap">
+      <div class="gameboy" id="gameboy" aria-label="Handheld Game Boy-style chiptune music player">
+        <div class="top-seam"></div>
+        <section class="screen-bezel" aria-label="Music player screen">
+          <div class="bezel-brand">DOT MATRIX WITH <span>STEREO SOUND</span></div>
+          <div class="lcd-frame">
+            <div class="lcd" id="lcd">
+              <div class="screen-app">
+                <div class="screen-top">
+                  <span><i class="led" id="screenLed"></i>POTASSIVM</span>
+                  <div class="screen-tabs"><button class="screen-tab active" id="songTab" type="button" data-action="song" aria-pressed="true">SONG</button><button class="screen-tab" id="listTab" type="button" data-action="list" aria-pressed="false">LIST</button></div>
+                </div>
+                <div id="songView" class="song-view">
+                  <div class="now-playing">
+                    <div>
+                      <div class="track-label">NOW PLAYING / <span id="trackCount">01 OF 05</span></div>
+                      <div class="track-title" id="trackTitle">RUNHOME</div>
+                    </div>
+                    <div class="track-number" id="trackNumber">01</div>
+                  </div>
+                  <div class="meta-line"><span id="modeLabel">SONG MODE · 4CH</span><span id="durationLabel">03:09</span></div>
+                  <div class="channels" aria-label="LSDJ-inspired four channel pattern display">
+                    <div class="channel-row"><span class="channel-name">PU1</span><div class="steps" data-channel="0"></div><span class="channel-level">P1</span></div>
+                    <div class="channel-row"><span class="channel-name">PU2</span><div class="steps" data-channel="1"></div><span class="channel-level">P2</span></div>
+                    <div class="channel-row"><span class="channel-name">WAV</span><div class="steps" data-channel="2"></div><span class="channel-level">W3</span></div>
+                    <div class="channel-row"><span class="channel-name">NOI</span><div class="steps" data-channel="3"></div><span class="channel-level">N4</span></div>
+                  </div>
+                  <div class="waveform" id="waveform" aria-hidden="true"></div>
+                  <div class="progress-wrap">
+                    <div class="progress-top"><span id="playState">STOPPED</span><span><span id="elapsedLabel">00:00</span> / <span id="durationSmall">03:09</span></span></div>
+                    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+                  </div>
+                  <div class="screen-bottom"><span class="hint" id="screenHint">A: PLAY/PAUSE · B: STOP</span><a class="bandcamp-link" id="bandcampButton" href="https://potassivm.bandcamp.com/track/runhome" target="_blank" rel="noopener noreferrer">BANDCAMP</a></div>
+                </div>
+                <div class="list-view" id="listView">
+                  <div class="list-heading"><span>SONG SELECT</span><span>5 TRK</span></div>
+                  <div class="track-list" id="trackList"></div>
+                  <div class="screen-bottom list-screen-bottom"><span class="hint" id="listHint">↑↓ SELECT TRACK · A PLAY</span><a class="bandcamp-link" id="listBandcampButton" href="https://potassivm.bandcamp.com/track/runhome" target="_blank" rel="noopener noreferrer">BANDCAMP</a></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <div class="logo-wordmark" aria-label="Nintendo Game Boy wordmark"><span class="nintendo">Nintendo</span><span class="game">GAME</span><span class="boy">BOY</span><span class="tm">™</span></div>
+
+        <section class="controls" aria-label="Player controls">
+          <div class="dpad" aria-label="Directional pad">
+            <div class="dpad-base"></div><div class="dpad-cross"></div>
+            <button class="dpad-button up" data-action="up" aria-label="Previous track">▲</button>
+            <button class="dpad-button down" data-action="down" aria-label="Next track">▼</button>
+            <button class="dpad-button left" data-action="up" aria-label="Previous track">◀</button>
+            <button class="dpad-button right" data-action="down" aria-label="Next track">▶</button>
+            <div class="dpad-center"></div>
+          </div>
+          <div class="action-cluster" aria-label="A and B buttons">
+            <button class="action-button b" id="bButton" data-action="stop" aria-label="B: stop">B</button>
+            <button class="action-button a" id="aButton" data-action="play" aria-label="A: play or pause">A</button>
+            <span class="button-label b">B</span><span class="button-label a">A</span>
+          </div>
+          <div class="small-controls">
+            <div class="small-button-wrap"><button class="small-button" id="selectButton" data-action="select" aria-label="Select: toggle song list"></button><span class="small-label">SELECT</span></div>
+            <div class="small-button-wrap"><button class="small-button" id="startButton" data-action="start" aria-label="Start: play or pause"></button><span class="small-label">START</span></div>
+          </div>
+          <div class="speaker" aria-label="Speaker grille"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+        </section>
+        <div class="now-playing-indicator" id="physicalStatus" aria-label="Audio player ready" title="Audio player status"></div>
+        <div class="headphone-detail" aria-hidden="true"><span>PHONES</span><i></i></div>
+      </div>
+    </div>
+
+    <div class="device-help">
+      <div class="legend"><span><b class="key">A</b> PLAY/PAUSE</span><span><b class="key">B</b> STOP</span><span><b class="key">↑↓</b> TRACK</span></div>
+      <div class="audio-status" id="audioStatus" role="status" aria-live="polite">READY · 5 TRACKS</div>
+    </div>
+    <footer class="page-footer">Music rights reserved to <a href="https://potassivm.bandcamp.com/album/eulogy-for-the-old-internet">POTASSIVM</a></footer>
+    <footer class="page-footer">UI inspired by Nintendo Game Boy™</footer>
+    <audio id="audio" preload="metadata"></audio>
+  </main>
+<script>
+  // The player uses its five bundled tracks.
+  const tracks = [
+    { title: 'RUNHOME',  duration: 189, link: 'https://potassivm.bandcamp.com/track/runhome', src: 'music/potassivm 01 RUNHOME.mp3' },
+    { title: 'LATEFLIP', duration: 137, link: 'https://potassivm.bandcamp.com/track/lateflip', src: 'music/potassivm 02 LATEFLIP.mp3' },
+    { title: 'BADTRAP',  duration: 144, link: 'https://potassivm.bandcamp.com/track/badtrap', src: 'music/potassivm 03 BADTRAP.mp3' },
+    { title: 'TRNCHTS',  duration: 211, link: 'https://potassivm.bandcamp.com/track/trnchts', src: 'music/potassivm 04 TRNCHTS.mp3' },
+    { title: 'SH33PS',   duration: 205, link: 'https://potassivm.bandcamp.com/track/sh33ps', src: 'music/potassivm 05 SH33PS.mp3' }
+  ];
+
+  const $ = (id) => document.getElementById(id);
+  const audio = $('audio');
+  const lcd = $('lcd');
+  const gameboy = $('gameboy');
+  let currentIndex = 0;
+  let loadedIndex = 0;
+  let sourceVersion = 0;
+  const trackTimes = tracks.map(() => 0);
+  let listVisible = false;
+  let feedbackMessage = '';
+  let feedbackTimer = null;
+
+  const formatTime = (seconds) => {
+    if (!Number.isFinite(seconds) || seconds < 0) seconds = 0;
+    const m = Math.floor(seconds / 60).toString().padStart(2, '0');
+    const s = Math.floor(seconds % 60).toString().padStart(2, '0');
+    return `${m}:${s}`;
+  };
+
+  // Give each song its own repeatable, LSDJ-like step pattern.
+  document.querySelectorAll('.steps').forEach((row, channelIndex) => {
+    for (let i = 0; i < 16; i++) {
+      const step = document.createElement('span');
+      step.className = 'step';
+      row.appendChild(step);
+    }
+    const seed = [2, 5, 9, 12][channelIndex];
+    [...row.children].forEach((step, i) => {
+      if ((i + seed + channelIndex) % (channelIndex === 2 ? 3 : 4) === 0 || (channelIndex === 0 && i % 4 === 0)) step.classList.add('on');
+    });
+  });
+  for (let i = 0; i < 22; i++) {
+    const bar = document.createElement('span');
+    bar.style.setProperty('--h', `${18 + ((i * 31 + 19) % 80)}%`);
+    bar.style.setProperty('--d', `${(i % 7) * -45}ms`);
+    $('waveform').appendChild(bar);
+  }
+
+  function currentTrack() { return tracks[currentIndex]; }
+  function loadedTrack() { return tracks[loadedIndex]; }
+  function audioAvailable(track = loadedTrack()) { return Boolean(track.src); }
+  function isActuallyPlaying() { return !audio.paused && !audio.ended && audio.currentTime >= 0; }
+  function saveLoadedPosition() {
+    if (audioAvailable() && Number.isFinite(audio.currentTime)) {
+      trackTimes[loadedIndex] = audio.currentTime;
+    }
+  }
+
+  function showFeedback(message, duration = 2300) {
+    feedbackMessage = message;
+    $('audioStatus').textContent = message;
+    if (feedbackTimer) clearTimeout(feedbackTimer);
+    feedbackTimer = setTimeout(() => {
+      feedbackMessage = '';
+      updateStatus();
+    }, duration);
+  }
+
+  function updateStatus() {
+    const track = loadedTrack();
+    let status;
+    if (isActuallyPlaying()) status = `PLAYING · ${track.title}`;
+    else status = audio.currentTime > 0 ? `PAUSED · ${track.title}` : 'READY · 5 TRACKS';
+    $('audioStatus').textContent = feedbackMessage || status;
+    $('physicalStatus').setAttribute('aria-label', isActuallyPlaying() ? 'Audio playing' : 'Audio player ready');
+    gameboy.classList.toggle('is-playing', isActuallyPlaying());
+    lcd.classList.toggle('playing', isActuallyPlaying());
+    $('screenLed').classList.toggle('live', isActuallyPlaying());
+  }
+
+  function updateScreen() {
+    const track = loadedTrack();
+    $('bandcampButton').href = currentTrack().link;
+    $('listBandcampButton').href = currentTrack().link;
+    $('trackTitle').textContent = track.title;
+    $('trackCount').textContent = `${String(currentIndex + 1).padStart(2,'0')} OF 05`;
+    $('trackNumber').textContent = String(currentIndex + 1).padStart(2,'0');
+    const actualDuration = audioAvailable(track) && Number.isFinite(audio.duration) && audio.duration > 0 ? audio.duration : track.duration;
+    $('durationLabel').textContent = formatTime(actualDuration);
+    $('durationSmall').textContent = formatTime(actualDuration);
+    $('elapsedLabel').textContent = formatTime(audioAvailable(track) ? audio.currentTime : 0);
+    $('progressFill').style.width = `${audioAvailable(track) && actualDuration > 0 ? Math.min(100, (audio.currentTime / actualDuration) * 100) : 0}%`;
+    $('playState').textContent = isActuallyPlaying() ? '▶ PLAYING' : (audioAvailable(track) && audio.currentTime > 0 ? 'Ⅱ PAUSED' : '■ STOPPED');
+    $('screenHint').textContent = 'A: PLAY/PAUSE · B: STOP';
+    document.querySelectorAll('.track-row').forEach((row, i) => row.classList.toggle('current', i === currentIndex));
+    document.querySelectorAll('.steps').forEach((row, channelIndex) => {
+      const steps = [...row.children];
+      steps.forEach((step, i) => {
+        step.classList.toggle('active', isActuallyPlaying() && i === Math.floor((audio.currentTime * (1.7 + channelIndex * .23)) % 16));
+        // Small track-to-track variation without pretending these are actual song notes.
+        step.classList.toggle('on', ((i * (channelIndex + 2) + loadedIndex * 3 + channelIndex) % (channelIndex === 2 ? 3 : 4) === 0) || (channelIndex === 0 && i % 4 === 0));
+      });
+    });
+    updateStatus();
+  }
+
+  function renderTrackList() {
+    $('trackList').replaceChildren();
+    tracks.forEach((track, index) => {
+      const row = document.createElement('div');
+      row.className = 'track-row' + (index === currentIndex ? ' current' : '');
+
+      const selectButton = document.createElement('button');
+      selectButton.type = 'button';
+      selectButton.className = 'track-select';
+      selectButton.setAttribute('aria-label', `${track.title}, ${formatTime(track.duration)}`);
+      selectButton.setAttribute('aria-pressed', String(index === currentIndex));
+      const number = document.createElement('span');
+      number.textContent = String(index + 1).padStart(2, '0');
+      const title = document.createElement('span');
+      title.textContent = track.title;
+      const duration = document.createElement('span');
+      duration.textContent = formatTime(track.duration);
+      selectButton.append(number, title, duration);
+      selectButton.addEventListener('click', () => { selectTrack(index); });
+
+      row.append(selectButton);
+      $('trackList').appendChild(row);
+    });
+  }
+
+  function updateView() {
+    $('songView').style.display = listVisible ? 'none' : 'flex';
+    $('listView').classList.toggle('visible', listVisible);
+    $('songTab').classList.toggle('active', !listVisible);
+    $('listTab').classList.toggle('active', listVisible);
+    $('songTab').setAttribute('aria-pressed', String(!listVisible));
+    $('listTab').setAttribute('aria-pressed', String(listVisible));
+    $('listHint').textContent = listVisible ? 'A: PLAY/PAUSE · B: STOP' : '↑↓ SELECT TRACK · A PLAY/PAUSE';
+  }
+
+  function attachCurrentSource(restorePosition = true) {
+    const track = currentTrack();
+    saveLoadedPosition();
+    audio.pause();
+    loadedIndex = currentIndex;
+    const loadVersion = ++sourceVersion;
+    if (track.src) {
+      if (audio.src !== new URL(track.src, window.location.href).href) audio.src = track.src;
+      const restoreIndex = loadedIndex;
+      const restoreTime = trackTimes[restoreIndex];
+      if (restorePosition && restoreTime > 0) {
+        audio.addEventListener('loadedmetadata', function restore() {
+          audio.removeEventListener('loadedmetadata', restore);
+          if (loadedIndex === restoreIndex && sourceVersion === loadVersion) {
+            audio.currentTime = Number.isFinite(audio.duration) ? Math.min(restoreTime, audio.duration) : restoreTime;
+          }
+        }, { once: true });
+      }
+      audio.load();
+    } else {
+      audio.removeAttribute('src');
+      audio.load();
+    }
+  }
+
+  function selectTrack(index) {
+    const nextIndex = (index + tracks.length) % tracks.length;
+    if (nextIndex === currentIndex) return;
+    currentIndex = nextIndex;
+    if (!listVisible) attachCurrentSource();
+    renderTrackList();
+    updateScreen();
+  }
+
+  async function togglePlayback() {
+    if (currentIndex !== loadedIndex) attachCurrentSource();
+    if (isActuallyPlaying()) {
+      saveLoadedPosition();
+      audio.pause();
+      updateScreen();
+      return;
+    }
+    try {
+      await audio.play();
+      updateScreen();
+    } catch (error) {
+      showFeedback('CAN’T PLAY THIS AUDIO FILE');
+    }
+  }
+
+  function stopPlayback() {
+    if (currentIndex !== loadedIndex) attachCurrentSource(false);
+    sourceVersion++;
+    audio.pause();
+    try { audio.currentTime = 0; } catch (_) {}
+    trackTimes[loadedIndex] = 0;
+    updateScreen();
+  }
+
+  function seek(delta) {
+    const limit = Number.isFinite(audio.duration) ? audio.duration : loadedTrack().duration;
+    audio.currentTime = Math.max(0, Math.min(limit, audio.currentTime + delta));
+    updateScreen();
+  }
+
+  function handleAction(action) {
+    switch (action) {
+      case 'up': selectTrack(currentIndex - 1); break;
+      case 'down': selectTrack(currentIndex + 1); break;
+      case 'left': seek(-5); break;
+      case 'right': seek(5); break;
+      case 'play': togglePlayback(); break;
+      case 'stop': stopPlayback(); break;
+      case 'select':
+        listVisible = !listVisible;
+        updateView();
+        break;
+      case 'song':
+        listVisible = false;
+        updateView();
+        break;
+      case 'list':
+        listVisible = true;
+        updateView();
+        break;
+      case 'start':
+        if (listVisible) { listVisible = false; updateView(); }
+        togglePlayback();
+        break;
+    }
+  }
+
+  document.querySelectorAll('[data-action]').forEach(button => {
+    button.addEventListener('click', () => handleAction(button.dataset.action));
+  });
+  audio.addEventListener('timeupdate', () => {
+    saveLoadedPosition();
+    updateScreen();
+  });
+  audio.addEventListener('play', updateScreen);
+  audio.addEventListener('pause', updateScreen);
+  audio.addEventListener('loadedmetadata', updateScreen);
+  audio.addEventListener('ended', () => {
+    if (loadedIndex < tracks.length - 1 && audioAvailable(tracks[loadedIndex + 1])) {
+      currentIndex = loadedIndex + 1;
+      attachCurrentSource();
+      renderTrackList();
+      audio.play().catch(() => updateScreen());
+    } else {
+      updateScreen();
+    }
+  });
+  audio.addEventListener('error', () => {
+    if (audioAvailable()) showFeedback('AUDIO COULD NOT BE LOADED');
+    updateScreen();
+  });
+  document.addEventListener('keydown', event => {
+    const key = event.key.toLowerCase();
+    const actions = { arrowup:'up', arrowdown:'down', arrowleft:'left', arrowright:'right', z:'play', x:'stop', enter:'start', shift:'select' };
+    if (actions[key]) {
+      event.preventDefault();
+      handleAction(actions[key]);
+    }
+  });
+  attachCurrentSource();
+  renderTrackList();
+  updateView();
+  updateScreen();
+</script>
+</body>
+</html>
