@@ -94,7 +94,7 @@
     position: relative; width: 100%; height: 100%; overflow: hidden; cursor: default;
     background: var(--lcd); color: var(--ink); border: 1px solid #7e9274;
     box-shadow: inset 0 0 12px rgba(40,58,37,.18);
-    font-size: clamp(6px, 1.7vw, 7.8px); line-height: 1.23; letter-spacing: .025em;
+    font-size: clamp(7px, 2vw, 9px); line-height: 1.2; letter-spacing: .025em;
     text-shadow: .25px 0 currentColor; image-rendering: pixelated;
   }
   .lcd::before { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none; opacity: .17; background: repeating-linear-gradient(to bottom, transparent 0, transparent 2px, rgba(26,53,39,.24) 3px); }
@@ -108,7 +108,7 @@
   .screen-tab { padding: 1px 3px; border: 1px solid transparent; color: inherit; background: transparent; font: inherit; line-height: inherit; cursor: pointer; }
   .screen-tabs .active { border-color: var(--ink); background: var(--ink); color: var(--lcd); }
   .screen-tab:focus-visible { outline: 1px dotted var(--deep-ink); outline-offset: 1px; }
-  .song-view { display: flex; flex-direction: column; flex: 1; min-height: 0; gap: 4px; }
+  .song-view { display: flex; flex-direction: column; flex: 1; min-height: 0; gap: 2px; }
   .now-playing { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 3px; align-items: end; }
   .track-label { opacity: .8; font-size: .88em; }
   .track-title { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-size: 1.23em; line-height: 1.15; font-weight: 900; letter-spacing: .015em; }
@@ -122,15 +122,13 @@
   .step.on { background: var(--ink); }
   .step.active { background: #d6e1ca; outline: 1px solid var(--ink); }
   .channel-level { min-width: 16px; text-align: right; font-size: .78em; }
-  .waveform { display: flex; align-items: center; gap: 2px; height: 15px; overflow: hidden; opacity: .92; }
-  .waveform span { flex: 1; min-width: 2px; height: var(--h,30%); background: var(--ink); }
-  .lcd.playing .waveform span { animation: wave-pulse .35s ease-in-out infinite alternate; animation-delay: var(--d,0ms); }
-  @keyframes wave-pulse { from { height: 14%; } to { height: var(--h,90%); } }
   .progress-wrap { display: flex; flex-direction: column; gap: 2px; margin-top: auto; }
+  .song-view .progress-wrap { margin-top: 0; }
   .progress-top { display: flex; justify-content: space-between; gap: 4px; font-size: .86em; white-space: nowrap; }
   .progress-track { height: 5px; border: 1px solid var(--ink); padding: 1px; }
   .progress-fill { width: 0%; height: 100%; background: var(--ink); transition: width .12s linear; }
   .screen-bottom { display: flex; align-items: center; justify-content: space-between; padding-top: 2px; gap: 3px; font-size: .8em; white-space: nowrap; }
+  .song-view .screen-bottom { flex-shrink: 0; margin-top: auto; }
   .screen-bottom .hint { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
   .bandcamp-link { flex: 0 0 auto; min-height: 15px; border: 1px solid var(--ink); background: transparent; color: var(--ink); font-size: inherit; font-weight: 900; padding: 1px 4px; text-decoration: none; }
   .bandcamp-link:active { background: var(--ink); color: var(--lcd); }
@@ -139,7 +137,7 @@
   .list-heading { display: flex; justify-content: space-between; padding-bottom: 3px; border-bottom: 1px solid rgba(37,60,50,.55); font-weight: 900; }
   .track-list { display: flex; min-height: 0; flex-direction: column; gap: 2px; }
   .track-row { display: grid; grid-template-columns: minmax(0,1fr) auto; align-items: center; gap: 3px; }
-  .track-select { display: grid; grid-template-columns: 16px minmax(0,1fr) auto; gap: 4px; width: 100%; min-width: 0; border: 0; padding: 3px 2px; color: var(--ink); background: transparent; text-align: left; font: inherit; cursor: pointer; }
+  .track-select { display: grid; grid-template-columns: 16px minmax(0,1fr) auto; gap: 4px; width: 100%; min-width: 0; border: 0; padding: 1px 2px; color: var(--ink); background: transparent; text-align: left; font: inherit; cursor: pointer; }
   .track-row.current .track-select { color: var(--lcd); background: var(--ink); }
   .track-select:focus-visible, .bandcamp-link:focus-visible { outline: 2px dotted var(--deep-ink); outline-offset: 1px; }
   .list-screen-bottom { margin-top: auto; border-top: 1px solid rgba(37,60,50,.55); }
@@ -165,8 +163,8 @@
     font-weight: 900; letter-spacing: -.055em;
   }
   .logo-wordmark .nintendo { margin-top: 7px; align-self: center; margin-right: 1px; font-size: clamp(12px, 2vw, 12px); letter-spacing: -.02em; }
-  .logo-wordmark .game { font-style: italic; font-size: clamp(17px, 5vw, 24px); letter-spacing: -.07em; }
-  .logo-wordmark .boy { font-style: italic; font-size: clamp(17px, 5.5vw, 24px); letter-spacing: -.08em; }
+  .logo-wordmark .game { margin-top: 2px; font-style: italic; font-size: clamp(17px, 5vw, 24px); letter-spacing: -.08em; }
+  .logo-wordmark .boy { margin-top: 2px; font-style: italic; font-size: clamp(17px, 5vw, 24px); letter-spacing: -.08em; }
   .logo-wordmark .tm { align-self: flex-start; margin-top: 19px; font-size: 9px; font-style: normal; letter-spacing: 0; }
   .logo-sub, .control-caption { display: none; }
 
@@ -285,13 +283,18 @@
     .speaker span { height: 3px; flex-basis: 3px; }
     .screen-app { padding: 3px 4px 2px; gap: 2px; }
     .song-view { gap: 2px; }
+    .list-view, .track-list { gap: 0; }
+    .list-heading { padding-bottom: 1px; }
+    .track-select { padding: 0 2px; }
     .channel-row { grid-template-columns: 20px minmax(0,1fr) auto; gap: 3px; min-height: 8px; }
     .channels { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); align-items: center; padding: 2px 0; gap: 1px 4px; }
     .steps { height: 5px; }
-    .waveform { display: none; }
     .progress-wrap { gap: 1px; }
     .progress-track { height: 4px; }
     .screen-bottom { gap: 2px; }
+  }
+  @media (max-width: 420px) {
+    .song-view .channels { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); align-items: center; padding: 2px 0; gap: 1px 4px; }
   }
   @media (max-width: 320px) {
     .meta-line { display: none; }
@@ -310,6 +313,10 @@
     .page { max-width: 340px; gap: 7px; }
     .device-wrap { width: min(66vw, 300px); }
     .brandline, .device-help { width: min(66vw, 300px); }
+    .song-view .channels { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); align-items: center; padding: 2px 0; gap: 1px 4px; }
+    .list-view, .track-list { gap: 0; }
+    .list-heading { padding-bottom: 1px; }
+    .track-select { padding: 0 2px; }
   }
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
@@ -346,7 +353,6 @@
                     <div class="channel-row"><span class="channel-name">WAV</span><div class="steps" data-channel="2"></div><span class="channel-level">W3</span></div>
                     <div class="channel-row"><span class="channel-name">NOI</span><div class="steps" data-channel="3"></div><span class="channel-level">N4</span></div>
                   </div>
-                  <div class="waveform" id="waveform" aria-hidden="true"></div>
                   <div class="progress-wrap">
                     <div class="progress-top"><span id="playState">STOPPED</span><span><span id="elapsedLabel">00:00</span> / <span id="durationSmall">03:09</span></span></div>
                     <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
@@ -415,6 +421,8 @@
   let currentIndex = 0;
   let loadedIndex = 0;
   let sourceVersion = 0;
+  let playbackStarted = false;
+  let playbackLoading = false;
   const trackTimes = tracks.map(() => 0);
   let listVisible = false;
   let feedbackMessage = '';
@@ -439,17 +447,10 @@
       if ((i + seed + channelIndex) % (channelIndex === 2 ? 3 : 4) === 0 || (channelIndex === 0 && i % 4 === 0)) step.classList.add('on');
     });
   });
-  for (let i = 0; i < 22; i++) {
-    const bar = document.createElement('span');
-    bar.style.setProperty('--h', `${18 + ((i * 31 + 19) % 80)}%`);
-    bar.style.setProperty('--d', `${(i % 7) * -45}ms`);
-    $('waveform').appendChild(bar);
-  }
-
   function currentTrack() { return tracks[currentIndex]; }
   function loadedTrack() { return tracks[loadedIndex]; }
   function audioAvailable(track = loadedTrack()) { return Boolean(track.src); }
-  function isActuallyPlaying() { return !audio.paused && !audio.ended && audio.currentTime >= 0; }
+  function isActuallyPlaying() { return playbackStarted && !audio.paused && !audio.ended; }
   function saveLoadedPosition() {
     if (audioAvailable() && Number.isFinite(audio.currentTime)) {
       trackTimes[loadedIndex] = audio.currentTime;
@@ -470,11 +471,13 @@
     const track = loadedTrack();
     let status;
     if (isActuallyPlaying()) status = `PLAYING · ${track.title}`;
+    else if (playbackLoading) status = `LOADING · ${track.title}`;
     else status = audio.currentTime > 0 ? `PAUSED · ${track.title}` : 'READY · 5 TRACKS';
     $('audioStatus').textContent = feedbackMessage || status;
-    $('physicalStatus').setAttribute('aria-label', isActuallyPlaying() ? 'Audio playing' : 'Audio player ready');
+    $('physicalStatus').setAttribute('aria-label', isActuallyPlaying() ? 'Audio playing' : playbackLoading ? 'Audio loading' : 'Audio player ready');
     gameboy.classList.toggle('is-playing', isActuallyPlaying());
     lcd.classList.toggle('playing', isActuallyPlaying());
+    lcd.classList.toggle('loading', playbackLoading);
     $('screenLed').classList.toggle('live', isActuallyPlaying());
   }
 
@@ -490,7 +493,7 @@
     $('durationSmall').textContent = formatTime(actualDuration);
     $('elapsedLabel').textContent = formatTime(audioAvailable(track) ? audio.currentTime : 0);
     $('progressFill').style.width = `${audioAvailable(track) && actualDuration > 0 ? Math.min(100, (audio.currentTime / actualDuration) * 100) : 0}%`;
-    $('playState').textContent = isActuallyPlaying() ? '▶ PLAYING' : (audioAvailable(track) && audio.currentTime > 0 ? 'Ⅱ PAUSED' : '■ STOPPED');
+    $('playState').textContent = isActuallyPlaying() ? '▶ PLAYING' : playbackLoading ? '… LOADING' : (audioAvailable(track) && audio.currentTime > 0 ? 'Ⅱ PAUSED' : '■ STOPPED');
     $('screenHint').textContent = 'A: PLAY/PAUSE · B: STOP';
     document.querySelectorAll('.track-row').forEach((row, i) => row.classList.toggle('current', i === currentIndex));
     document.querySelectorAll('.steps').forEach((row, channelIndex) => {
@@ -542,6 +545,8 @@
   function attachCurrentSource(restorePosition = true) {
     const track = currentTrack();
     saveLoadedPosition();
+    playbackStarted = false;
+    playbackLoading = false;
     audio.pause();
     loadedIndex = currentIndex;
     const loadVersion = ++sourceVersion;
@@ -575,23 +580,31 @@
 
   async function togglePlayback() {
     if (currentIndex !== loadedIndex) attachCurrentSource();
-    if (isActuallyPlaying()) {
+    if (!audio.paused && !audio.ended) {
       saveLoadedPosition();
       audio.pause();
       updateScreen();
       return;
     }
+    playbackStarted = false;
+    playbackLoading = true;
+    updateScreen();
     try {
       await audio.play();
       updateScreen();
     } catch (error) {
+      playbackStarted = false;
+      playbackLoading = false;
       showFeedback('CAN’T PLAY THIS AUDIO FILE');
+      updateScreen();
     }
   }
 
   function stopPlayback() {
     if (currentIndex !== loadedIndex) attachCurrentSource(false);
     sourceVersion++;
+    playbackStarted = false;
+    playbackLoading = false;
     audio.pause();
     try { audio.currentTime = 0; } catch (_) {}
     trackTimes[loadedIndex] = 0;
@@ -638,20 +651,49 @@
     saveLoadedPosition();
     updateScreen();
   });
-  audio.addEventListener('play', updateScreen);
-  audio.addEventListener('pause', updateScreen);
+  audio.addEventListener('play', () => {
+    playbackStarted = false;
+    playbackLoading = true;
+    updateScreen();
+  });
+  audio.addEventListener('playing', () => {
+    playbackStarted = true;
+    playbackLoading = false;
+    updateScreen();
+  });
+  audio.addEventListener('waiting', () => {
+    if (!audio.paused && !audio.ended) {
+      playbackStarted = false;
+      playbackLoading = true;
+    }
+    updateScreen();
+  });
+  audio.addEventListener('pause', () => {
+    playbackStarted = false;
+    playbackLoading = false;
+    updateScreen();
+  });
   audio.addEventListener('loadedmetadata', updateScreen);
   audio.addEventListener('ended', () => {
+    playbackStarted = false;
+    playbackLoading = false;
     if (loadedIndex < tracks.length - 1 && audioAvailable(tracks[loadedIndex + 1])) {
       currentIndex = loadedIndex + 1;
       attachCurrentSource();
       renderTrackList();
-      audio.play().catch(() => updateScreen());
+      playbackLoading = true;
+      updateScreen();
+      audio.play().catch(() => {
+        playbackLoading = false;
+        updateScreen();
+      });
     } else {
       updateScreen();
     }
   });
   audio.addEventListener('error', () => {
+    playbackStarted = false;
+    playbackLoading = false;
     if (audioAvailable()) showFeedback('AUDIO COULD NOT BE LOADED');
     updateScreen();
   });
